@@ -1,0 +1,149 @@
+#logo a {
+    background: url("../images/logo-scala.png") no-repeat scroll 50% 50% transparent;
+    width: 161px;
+}
+#top {
+    background: -moz-linear-gradient(left bottom , #54D2CF, #605A9E) repeat scroll 0 0 transparent;
+}
+#menu .selected a:after {
+    border-bottom: 0.8em solid #4990B0;
+}
+#scalaTop {
+    color: #CCF3FF;
+    margin: 0 0 25px !important;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+#scalaTop a {
+    border-bottom: 1px dotted #CCF3FF;
+    color: #CCF3FF;
+    text-decoration: none;
+}
+#scalaTop a:hover {
+    border: medium none;
+}
+#scalaTop small {
+    font-size: 24px;
+}
+.scala #top .category {
+    color: #FFFFFF;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+}
+.scala #top #note {
+    background: -moz-linear-gradient(left bottom , rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3)) repeat scroll 0 0 transparent;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.6);
+    color: #211B5B;
+    font-size: 12px;
+    margin: 20px 0 0;
+    padding: 10px;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+}
+.scala #top #note code {
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 2px 2px 2px 2px;
+    font-size: 13px;
+    padding: 1px 6px 2px;
+}
+.scala #top #note strong {
+    font-size: 14px;
+    margin-left: 5px;
+    position: relative;
+    top: 0;
+}
+.scala #top #note a {
+    color: #211B5B;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+}
+.scala .slide {
+    float: left;
+    margin: 10px 35px 0 0;
+    padding: 20px 0 10px;
+    width: 430px;
+}
+.scala .slide.right {
+    margin-right: 0;
+}
+.scala .code {
+    border-left: 3px solid #EEEEEE;
+    color: #222222;
+    line-height: 1.5em;
+    margin-left: 40px;
+    padding-left: 10px;
+    text-shadow: none;
+    white-space: pre;
+}
+.scala .code .shell {
+    color: #D83024;
+    font-weight: bold;
+}
+.scala .code .symbol {
+    color: #990095;
+}
+.scala .code .string {
+    color: #4A9900;
+}
+.scala .code .keyword {
+    color: #D86101;
+}
+.scala .code .type {
+    color: #2D8DDD;
+}
+.scala .code .func {
+    color: #444444;
+}
+.scala .explain {
+    margin-left: 40px;
+}
+.scala .slide h2 {
+    color: #386683;
+    font-size: 18px;
+    height: 20px;
+    line-height: 1.2em;
+    margin-bottom: 0;
+    position: relative;
+    text-shadow: 1px 1px 0 white;
+}
+.scala .slide h2 span {
+    left: 40px;
+    position: absolute;
+    top: 0;
+}
+.scala .slide h2 img {
+    left: 0;
+    opacity: 0.8;
+    position: absolute;
+    top: -5px;
+}
+.scala .explain {
+    padding: 1em 0;
+}
+.scala .explain p {
+    margin-bottom: 1em;
+}
+.scala .explain p a {
+    color: #444444;
+}
+.scala hr {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color -moz-use-text-color #CCCCCC;
+    border-style: none none dotted;
+    border-width: medium medium 1px;
+    height: 40px;
+    margin: 0 50px;
+}
+.scala #docSidebar a {
+    color: #4B4893;
+}
+.scala .wikistyle p.note {
+    background: none repeat scroll 0 0 #CEF2EF !important;
+    border-left: 6px solid #A5C3C7 !important;
+}
+.scala #footer {
+    margin-top: 50px;
+    padding-bottom: 20px !important;
+}

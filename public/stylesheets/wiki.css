@@ -1,0 +1,136 @@
+.wikistyle h1, .wikistyle h2, .wikistyle h3, .wikistyle h4, .wikistyle h5, .wikistyle h6 {
+    border: 0 none !important;
+    text-shadow: 1px 1px 0 #FFFFFF;
+}
+.wikistyle h1 {
+    border-top: 4px solid #AAAAAA !important;
+    font-size: 170% !important;
+    margin-top: 1.5em !important;
+    padding-top: 0.5em !important;
+}
+.wikistyle h1:first-child {
+    border-top: medium none !important;
+    margin-top: 0 !important;
+    padding-top: 0.25em !important;
+}
+.wikistyle h2 {
+    border-top: 4px solid #E0E0E0 !important;
+    font-size: 150% !important;
+    margin-top: 1.5em !important;
+    padding-top: 0.5em !important;
+}
+.wikistyle h3 {
+    margin-top: 1em !important;
+}
+.wikistyle p {
+    line-height: 1.5em !important;
+    margin: 1em 0 !important;
+}
+.wikistyle ul {
+    line-height: 24px;
+    list-style: square outside none;
+    margin: 1em 0 1em 2em !important;
+}
+.wikistyle ol {
+    line-height: 24px;
+    list-style-position: outside;
+    list-style-type: decimal;
+    margin: 1em 0 1em 2em !important;
+}
+.wikistyle ul ul, .wikistyle ul ol, .wikistyle ol ol, .wikistyle ol ul {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+.wikistyle blockquote {
+    border-left: 5px solid #DDDDDD !important;
+    color: #666666 !important;
+    margin: 1em 0 !important;
+    padding-left: 0.6em !important;
+}
+.wikistyle dt {
+    font-weight: bold !important;
+    margin-left: 1em !important;
+}
+.wikistyle dd {
+    margin-bottom: 1em !important;
+    margin-left: 2em !important;
+}
+.wikistyle table {
+    margin: 1em 0 !important;
+    width: 650px;
+}
+.wikistyle table th {
+    border-bottom: 1px solid #BBBBBB !important;
+    padding: 0.2em 1em !important;
+}
+.wikistyle table td {
+    border-bottom: 1px solid #DDDDDD !important;
+    padding: 0.2em 1em !important;
+}
+.wikistyle table td:first-child {
+    padding-left: 0 !important;
+}
+.wikistyle table td:last-child {
+    padding-right: 0 !important;
+}
+.wikistyle pre {
+    background-color: #F8F8FF !important;
+    border-left: 4px solid #E0E0E0 !important;
+    color: #444444 !important;
+    font-size: 90% !important;
+    line-height: 1.5em !important;
+    margin: 1em 0 !important;
+    overflow: auto !important;
+    padding: 0.5em !important;
+}
+.wikistyle pre code {
+    background-color: #F8F8FF !important;
+    border: medium none !important;
+    display: block;
+    font-size: 100% !important;
+    padding: 0 0 0 10px !important;
+}
+.wikistyle code {
+    background-color: #F8F8FF !important;
+    border: 1px solid #DEDEDE !important;
+    color: #444444 !important;
+    font-size: 90% !important;
+    padding: 0 0.2em !important;
+}
+.wikistyle pre.console {
+    background-color: black !important;
+    color: white !important;
+    font-size: 90% !important;
+    line-height: 1.5em !important;
+    margin: 1em 0 !important;
+    padding: 0.5em !important;
+}
+.wikistyle pre.console code {
+    background-color: black !important;
+    border: medium none !important;
+    color: white !important;
+    font-size: 100% !important;
+    padding: 0 !important;
+}
+.wikistyle pre.console span {
+    color: #888888 !important;
+}
+.wikistyle pre.console span.command {
+    color: yellow !important;
+}
+.wikistyle h1:after, .wikistyle h2:after, .wikistyle h3:after {
+    content: "";
+}
+.wikistyle a {
+    color: #444444;
+}
+.wikistyle img {
+    border: 4px solid #E0E0E0 !important;
+    max-width: 642px;
+}
+.wikistyle p.note {
+    background: none repeat scroll 0 0 #FFF9D8 !important;
+    border-left: 6px solid #F3E378 !important;
+    color: #333333 !important;
+    padding: 10px !important;
+}

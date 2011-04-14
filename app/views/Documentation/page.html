@@ -1,0 +1,63 @@
+#{extends 'main.html' /}
+#{set title:'Documentation' /}
+#{script src="navigation.js" /}
+
+<div id="top">
+    <p class="category">
+        Play で Scala を使う方法
+    </p>
+</div>
+
+<div class="wrapper">
+    <div id="docSidebar">
+        <h2>閲覧</h2>
+        <ul>
+            <li id="gotoc"><a href="home">目次</a></li>
+        </ul>
+        
+        <h2>内容</h2>
+        <div id="toc"></div>
+        
+        <h2>バージョン選択</h2>
+        <div id="bc">
+            <ul>
+                <li><a class="#{if version == '0.9'}selected#{/if}" href="/documentation?version=0.9">0.9</a> #{if version == '0.9'}⬅#{/if}</li>
+            </ul>
+        </div>
+        
+    </div>
+    
+    <div id="pageContent">
+        
+        <div class="wikistyle">${html.raw()}</div>
+        
+        <div id="comments">
+            <h2><a name="comments">コメント</a></h2>
+            
+            <p>
+                このフォームを使用して、このページのドキュメントに関する修正や追記、提案を追加してください。
+                質問はここには書かず、play-framework グループに質問してください。
+                サポート要求、バグレポート、趣旨に沿わないコメントは警告無しに削除されます。
+            </p>
+        </div>
+        
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_identifier = '${id}';
+          var disqus_title = '${title}';
+          (function() {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = 'http://playdocja.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+    </div>
+    
+    <script type="text/javascript" charset="utf-8">
+        // Fix @API link
+        $('a[href=/@api/index.html]').attr('href', "http://www.playframework.org/documentation/api/1.1/index.html")
+    </script>
+    
+</div>

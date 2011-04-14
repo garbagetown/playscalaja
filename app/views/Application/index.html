@@ -1,0 +1,101 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<div id="top">
+                            <div id="scalaTop">
+
+        <div class="wrapper">
+            <strong>Play Scala</strong> enables you to use the <a href="http://www.scala-lang.org">Scala language</a> for your application <a href="http://www.playframework.org">keeping key properties of the Play framework</a>. 
+            It uses a more functional and Scala idiomatic style of programming without giving up on simplicity and developer friendliness.
+            <div id="note">
+                <strong>version 0.9</strong> published on April 13 2011  &nbsp;—&nbsp; <code>play install scala-0.9</code> &nbsp;—&nbsp; <a href="/documentation/scala-0.9/roadmap">Check the roadmap to 1.0</a>
+
+            </div>
+        </div>
+    </div>
+                                </div>
+    
+        <div class="wrapper">
+
+<div class="slide">
+    
+<h2><img src="/public/images/icons/fire-blue.png"> <span>Add Scala power to Web applications</span></h2>
+
+<div class="explain">
+    <p>
+        A Scala Web framework made by Web developers. Gentle learning curve, start easy, gain in power as you learn more and more about the Scala language.
+    </p>
+</div>    
+
+<div class="code"><span class="keyword">$</span> <span class="type">play</span> <span class="func">install</span> scala
+<span class="keyword">$</span> <span class="type">play</span> <span class="func">new</span> myScalaWebapp <span class="string">--with</span> scala
+<span class="keyword">$</span> <span class="type">play</span> <span class="func">run</span></div>
+        
+</div>
+
+<div class="slide right">
+    
+<h2><img src="/public/images/icons/ff-blue.png"> <span>Scala flavored Play API</span></h2>  
+
+<div class="explain">
+    <p>
+
+        Use the "full stack" Play API, enabled for the expressivity and conciseness of Scala language.
+    </p>
+</div>  
+
+<div class="code"><span class="type">Cache</span>.<span class="func">getAsync</span>(<span class="string">"headlines"</span>, <span class="string">"1h"</span>, <span class="string">"5d"</span>) {
+    <span class="type">WS</span>.<span class="func">url</span>(endpoint).<span class="func">get</span>().<span class="func">focusOnOk</span>().<span class="func">map</span>(
+        _.<span class="func">getXml</span>() \\ <span class="string">"title"</span>
+    )
+}</div>
+        
+</div>
+
+<div class="slide">
+        
+<h2><img src="/public/images/icons/cloud-blue.png"> <span>Expression oriented</span></h2>  
+
+<div class="explain">
+    <p>
+        A controller method is a function that returns a value. This automatically means composability and easy code reuse. 
+    </p>
+
+</div>  
+
+<div class="code"><span class="keyword">def</span> <span class="func">show</span>(id: <span class="type">Long</span>) = {
+    <span class="type">Order</span>.<span class="func">findById</span>(id).<span class="func">map</span>( o =>
+        <span class="type">Template</span>(
+            <span class="symbol">'order</span> -> o, <span class="symbol">'user</span> -> <span class="func">connectedUser</span>
+        )
+    ).<span class="func">getOrElse</span>(<span class="type">NotFound</span>(<span class="string">"No such order"</span>))
+}</div>
+    
+</div>
+
+<div class="slide right">
+    
+<h2><img src="/public/images/icons/db-blue.png"> <span>Powerful SQL databases access</span></h2>    
+
+
+<div class="explain">
+    <p>
+        <a href="/documentation/scala-0.9/anorm">Anorm</a> is simplification of JDBC with a minimal interface reusing pre-existing Scala interfaces (collections, pattern-matching, parsers combinators).
+    </p>
+</div>
+
+<div class="code"><span class="keyword">val</span> <span class="func">postsWithAuthor</span>:<span class="type">List</span>[(<span class="type">Post</span>~<span class="type">User</span>)] = 
+    <span class="type">SQL</span>(
+        <span class="string">"""
+            select * from Post p join User u on 
+            p.author_id = u.id order by p.postedAt desc
+        """</span>
+    ).<span class="func">as</span>( <span class="type">Post</span> ~< <span class="type">User</span> * )
+</div>
+        
+</div>
+    
+</div>
+    
+
+</div>

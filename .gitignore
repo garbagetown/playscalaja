@@ -1,0 +1,10 @@
+eclipse/*
+eclipse/classes/*
+precompiled/*
+tmp/bytecode/*
+.classpath
+.project
+.settings/*
+.DS_Store
+*.swp
+*~

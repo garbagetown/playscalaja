@@ -1,0 +1,86 @@
+#{extends 'main.html' /}
+#{set title:'Code' /}
+
+<div id="top">
+    <p class="category">Play framework に貢献する</p>
+</div>
+
+<div class="wrapper">
+    
+    <div id="submenu">
+        
+        <ul class="sidemenu">
+            <li>
+                <a href="http://github.com/playframework/play" target="_blank">ソースコード</a>
+            </li>
+            <li>
+                <a href="http://play.lighthouseapp.com" target="_blank">バグトラッキング</a>
+            </li>
+            <li>
+                <a href="http://github.com/playframework/play/contributors" target="_blank">コミッタ</a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="wrapped wikistyle">
+        
+        <h1>ライセンス</h1>
+        
+        <p>
+            Play framework Scala モジュールのコードは <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache 2 licence</a> でリリースされています。
+        </p>
+        
+        <h2>バグ報告</h2>
+        
+        <p>
+            バグトラッカに <a href="http://play.lighthouseapp.com/projects/74274-play-scala/overview">Lighthouse</a> を使用しています。
+            バグレポートはとても役に立つので、時間を割いてバグトラッカにバグを報告したり機能をリクエストしてください。
+            パッチが添付されたバグ報告は、そうでないものよりもはるかに早く修正されるでしょう。
+        </p>
+
+        
+        <h2>コードの取得</h2>
+
+        <p>
+            Scala モジュールはバージョン管理システム Git を使用する Github で管理されています。以下のコマンドでコードを取得することができます:
+        </p>
+
+        <pre><code>git clone git://github.com/playframework/play-scala.git</code></pre>
+        
+        <h2>ソースからのビルド</h2>
+        
+        <p>
+            Scala モジュールをビルドするためには <a href="http://ant.apache.org/">Ant</a> が必要です。<strong>framework/</strong> ディレクトリに移動して以下のコマンドを実行してください:
+        </p>
+        
+        <pre><code>ant</code></pre>
+        
+        <p>
+            Scala コンパイラは多くのメモリを必要とするので、以下を使って ant に多くのメモリを与えることでより早くコンパイルできるでしょう。
+        </p>
+        
+        <pre>export ANT_OPTS='-Xms512m -Xmx1024m'</pre>
+        
+        <p>
+            これだけです！テストスイートを実行したい場合は、下記のコマンドを実行してください:
+        </p>
+        
+        <pre><code>ant test</code></pre>
+        
+        <h2>貢献</h2>
+        
+        <p>
+            貢献する最もよい方法は、バグを見つけること、バグを報告すること、バグのためのテストを書くこと、そしてドキュメントを改善することです。
+            Play コードのパッチは常に歓迎します。パッチが添付されたバグ報告は、そうでないものよりもはるかに早く修正されるでしょう。
+        </p>
+
+        <p>
+            コードを修正するときは、設計方針に従うよう注意してください。特に、モジュールや古いバージョンの互換性を壊さないよう注意してください。また、妥当な理由無しに複雑さを増大させないよう注意してください。
+        </p>
+        <p>
+            パッチを持っていますか？<a href="http://play.lighthouseapp.com/projects/57987/contributor-guide">貢献者ガイド</a> を確認してください。
+        </p>
+        
+    </div>
+    
+</div>

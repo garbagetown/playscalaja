@@ -1,5 +1,5 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
 	<application>playscalaja</application>
-	<version>20110415</version>
+	<version>20110415a</version>
 </appengine-web-app>
 

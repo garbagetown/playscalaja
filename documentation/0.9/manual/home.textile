@@ -1,66 +1,66 @@
 h1. Play Scala
 
-Welcome to the Play Scala documentation. This documentation is intended for the **0.9 release** of the Scala module and may significantly differs from previous versions. 
+Play Scala ドキュメントへようこそ。このドキュメントは Scala モジュールの **リリース 0.9** を対象としており、以前のバージョンのドキュメントとは大きく異なるかもしれません。
 
-Play Scala enables you to use the Scala language for your application keeping key properties of the Play framework. It uses a more functional and Scala idiomatic style of programming without giving up on simplicity and developer friendliness.
+Play Scala によって Play framework の主要な特性を保ったまま Scala 言語 をアプリケーションに使うことができるようになります。 Play Scala は、簡潔さと開発者に対する親切さを諦めることなく、Scala の文法的なプログラミングスタイルをより機能的に使います。
 
-p(note). This version is still in beta but can already be used to create complete Play applications using Scala as main language. Most of the API is stabilized and future versions will just improve compatibility with the existing Play features.
+p(note). このモジュールはまだベータバージョンですが、すでに Scala をメインの言語に使って完全な Play アプリケーションを作成するために使用することができます。ほとんどの API は安定しており、この先のバージョンでは単に既存の Play の機能との互換性を改良するだけでしょう。
  
-"Check the roadmap to 1.0":roadmap.
+"1.0 までのロードマップを確認してください":roadmap 。
 
-h2. Getting started
+h2. はじめよう
 
-Add Scala support to your existing Play installation.
+インストール済みの Play に Scala サポートを追加しましょう。
 
-# "Installing Scala support for Play":install
-# "‘Hello World’ tutorial — Your first Play Scala application":hello-world
-# "Learning Scala with Play":learnscala
+# "Play への Scala サポートのインストール":install
+# "‘Hello World’ チュートリアル — はじめての Play Scala アプリケーション":hello-world
+# "Play で Scala を学ぶ":learnscala
 
-h2. Manual
+h2. マニュアル
 
-The Scala version of Play framework share the same philosophy and concepts than the Java version. Here are the Scala specific features deeply explained.
+Scala 版 Play framework は Java 版と同じ哲学とコンセプトを共有します。ここでは Scala に特化した機能を掘り下げて説明します。
 
-# "‘Play Scala’ for Play Java developers":controllers
-## "Writing Play controllers in Scala":controllers
-### "Scala controllers are Objects":controllers#ScalacontrollersareObjects
-### "Action methods return values":controllers#Actionmethodsreturnvalues
-### "Return type inference":controllers#Returntypeinference
-### "Controller interceptors":controllers#Controllerinterceptors
-### "Mixing controllers using Traits":controllers#MixingcontrollersusingTraits
-## "HTTP to Scala data binding":dataBinding
-### "Binding Option types":dataBinding#BindingOptiontypes
-### "Using Scala default parameter values":dataBinding#UsingScaladefaultparametervalues
-### "Binding case classes":dataBinding#Bindingcaseclasses
-## "Dealing with Scala types in Play templates":templates
-### "Boolean operations on Option and Seq types":templates#BooleanoperationsonOptionandSeqtypes
-### "Safe navigation for Option types":templates#SafenavigationforOptiontypes
-### "Litteral access to elements of a Seq":templates#LitteralaccesstoelementsofaSeq
-## "Database access options":database
-### "Using Anorm":database#UsingAnorm
-### "Using JPA":database#UsingJPA
-### "Integrating other existing Database access librairies":database#IntegratingotherexistingDatabaseaccesslibrairies
-## "Testing your application":test
-### "JUnit Style":test#JUnitStyle
-### "JUnit Style with Should matchers":test#JUnitStylewithShouldmatchers
-### "Functional suite Style":test#FunctionalsuiteStyle
-### "Specification Style":test#SpecificationStyle
-### "Features list Style":test#FeatureslistStyle
-# "Anorm, SQL data access with Play Scala":anorm
-## "Overview":anorm#Overview
-## "Executing SQL requests":anorm#ExecutingSQLrequests
-## "Retrieving data using the Stream API":anorm#RetrievingdatausingtheStreamAPI
-## "Using Pattern Matching":anorm#UsingPatternMatching
-## "Dealing with Nullable columns":anorm#DealingwithNullablecolumns
-## "Using the Parser combinator API":anorm#UsingtheParsercombinatorAPI
-## "Adding some Magic[T]":anorm#AddingsomeMagicT
+# "Play Java 開発者向けの ‘Play Scala’":controllers
+## "Scala による Play コントローラの記述":controllers
+### "Scala のコントローラはオブジェクト":controllers#ScalacontrollersareObjects
+### "アクションメソッドは値を返す":controllers#Actionmethodsreturnvalues
+### "返却型の推論":controllers#Returntypeinference
+### "コントローラインターセプター":controllers#Controllerinterceptors
+### "トレイトを使ったコントローラの Mix-in":controllers#MixingcontrollersusingTraits
+## "HTTP から Scala へのデータバインディング":dataBinding
+### "Option 型のバインディング":dataBinding#BindingOptiontypes
+### "Scala のデフォルト引数値を使う":dataBinding#UsingScaladefaultparametervalues
+### "Case クラスへのバインディング":dataBinding#Bindingcaseclasses
+## "Play テンプレートで Scala の型を扱う":templates
+### "Option 型と Seq 型のブール演算":templates#BooleanoperationsonOptionandSeqtypes
+### "Option 型の安全なナビゲーション":templates#SafenavigationforOptiontypes
+### "Seq 要素への定数アクセス":templates#LitteralaccesstoelementsofaSeq
+## "データベースアクセスオプション":database
+### "Anorm の使用":database#UsingAnorm
+### "JPA の使用":database#UsingJPA
+### "その他の既存のデータベースアクセスライブラリとの統合":database#IntegratingotherexistingDatabaseaccesslibrairies
+## "アプリケーションのテスト":test
+### "JUnit スタイル":test#JUnitStyle
+### "Should マッチャによる JUnit スタイル":test#JUnitStylewithShouldmatchers
+### "関数スイートスタイル":test#FunctionalsuiteStyle
+### "仕様スタイル":test#SpecificationStyle
+### "機能リストスタイル":test#FeatureslistStyle
+# "Anorm, Play Scala による SQL データアクセス":anorm
+## "概要":anorm#Overview
+## "SQL リクエストの実行":anorm#ExecutingSQLrequests
+## "Stream API を使ったデータ検索":anorm#RetrievingdatausingtheStreamAPI
+## "パターンマッチングの使用":anorm#UsingPatternMatching
+## "Null を許容する列の扱い":anorm#DealingwithNullablecolumns
+## "パーサコンビネータ API の使用":anorm#UsingtheParsercombinatorAPI
+## "Magic[T] の追加":anorm#AddingsomeMagicT
 
-h2. Tutorial — Play Scala guide, a real world app step-by-step
+h2. チュートリアル — リアルなアプリケーションを一歩ずつ作成する Play Scala ガイド
 
-Here is the Scala version of the well known **‘Yet Another Blog Engine’** Play tutorial.
+お馴染み **‘Yet Another Blog Engine’** Play チュートリアルの Scala バージョンです。
 
-# "Starting up the project":guide1
-# "A first iteration of the data model":guide2
-# "Building the first screen":guide3
-# "The comments page":guide4
-# "Setting up a Captcha":guide5
-# (to be continued)
+# "プロジェクトの立ち上げ":guide1
+# "はじめてのモデル":guide2
+# "はじめての画面":guide3
+# "コメント投稿ページ":guide4
+# "キャプチャの設定":guide5
+# (つづく)

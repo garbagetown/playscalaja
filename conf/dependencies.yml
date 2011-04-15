@@ -2,4 +2,4 @@
 
 require:
     - play
-    - play -> gae 1.4
+#   - play -> gae 1.4

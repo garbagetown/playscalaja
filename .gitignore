@@ -2,6 +2,7 @@ eclipse/*
 eclipse/classes/*
 precompiled/*
 tmp/bytecode/*
+tmp/classes/*
 .classpath
 .project
 .settings/*

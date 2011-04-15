@@ -40,24 +40,16 @@
                 サポート要求、バグレポート、趣旨に沿わないコメントは警告無しに削除されます。
             </p>
         </div>
-        
+       
         <div id="disqus_thread"></div>
         <script type="text/javascript">
-          var disqus_identifier = '${id}';
-          var disqus_title = '${title}';
-          (function() {
+        var disqus_shortname = 'playscalaja';
+        (function() {
             var dsq = document.createElement('script');
             dsq.type = 'text/javascript';
             dsq.async = true;
-            dsq.src = 'http://playdocja.disqus.com/embed.js';
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-          })();
+        })();
         </script>
-    </div>
-    
-    <script type="text/javascript" charset="utf-8">
-        // Fix @API link
-        $('a[href=/@api/index.html]').attr('href', "http://www.playframework.org/documentation/api/1.1/index.html")
-    </script>
-    
 </div>

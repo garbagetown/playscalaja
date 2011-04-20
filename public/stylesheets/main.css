@@ -555,3 +555,17 @@ a:hover {
     border-width: 1px 0;
     margin: 10px 60px 0;
 }
+
+.profile-info {
+	margin-bottom: 2em;
+}
+
+.profile-image-container {
+	float: left;
+}
+
+.profile-details {
+    display: inline-block;
+    margin-left: 15px;
+    width: 500px;
+}

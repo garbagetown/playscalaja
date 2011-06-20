@@ -1,24 +1,24 @@
-h1. はじめての Play Scala アプリケーション
+h1. Your first Play Scala application
 
-よくある 'Hello World' の例を使って Play Scala の良さを理解する、とてもシンプルなチュートリアルです。
+A very simple tutorial, that will just help you to discover Play Scala with the famous 'Hello World' example.
 
-h2. <a>前提条件</a>
+h2. <a>Prerequisites</a>
 
-何よりも、Play が実行できる状態でインストールされていて、Scala モジュールが正しく利用可能となっていることを確認してください。
+First of all, make sure that you have a working Play installation, with the Scala module correctly enabled. 
 
-私たちはコマンドラインを多用するので、Unix ライクな OS のほうが良いでしょう。もし Windows 上で動かす場合でも、問題なく動作します。ただコマンドプロンプトでいくつかのコマンドを実行しなければならないだけです。
+As we will use the command line a lot, it's better to use a Unix-like OS. If you run a Windows system, it will also work fine; you'll just have to type a few commands in the command prompt.
 
-もちろんテキストエディタも必要です。Java の場合と同じように、Play Scala はコンパイルとデプロイを自身で管理します。
+You will of course need a text editor. As in Java, Play Scala manages the compilation and the deployment process itself. 
 
-h2. <a>プロジェクトの作成</a>
+h2. <a>Project creation</a>
 
-Play が正しくインストールされたので、いよいよ hello world アプリケーションを作成します。Play アプリケーションの作成は、Play コマンドラインユーティリティによって完全に管理されており、とても簡単です。Play コマンドラインユーティリティは、すべての Play アプリケーション間において標準的なプロジェクトレイアウトを割り当てます。
+Now that Play is correctly installed, it's time to create the hello world application. Creating a Play application is pretty easy and fully managed by the Play command line utility. That allows for standard project layouts between all Play applications. 
 
-新しいコマンドラインを開いて、以下をタイプしてください:
+Open a new command line and type:
 
 bc. $ play new helloworld --with scala
 
-アプリケーションの完全な名前を入力するプロンプトが表示されます。 **Hello world** とタイプしてください。
+It will prompt you for the application full name. Type **Hello world**.
 
 bc. $ play new helloworld --with scala
 ~        _            _ 
@@ -27,25 +27,25 @@ bc. $ play new helloworld --with scala
 ~ |  __/|_|\____|\__ (_)
 ~ |_|            |__/   
 ~
-~ play! 1.2, http://www.playframework.org
+~ play! 1.2.2, http://www.playframework.org
 ~
 ~ The new application will be created in ~/myScalaApp
 ~ What is the application name? [helloworld] Hello world
 ~
 ~ Resolving dependencies using ~/helloworld/conf/dependencies.yml,
 ~
-~ 	play->scala 0.9 (from playLocalModules)
+~ 	play->scala 0.9.1 (from playLocalModules)
 ~
 ~ Installing resolved dependencies,
 ~
-~ 	modules/scala-0.9 -> ~/play/1.2/modules/scala-0.9
+~ 	modules/scala-0.9.1 -> ~/play/1.2.2/modules/scala-0.9.1
 ~
 ~ OK, the application is created.
 ~ Start it with : play run helloworld
 ~ Have fun!
 ~
 
-**play new** コマンドは **helloworld/** ディレクトリを新規に作成し、一連のファイルやディレクトリをここに追加します。以下は、もっとも重要なディレクトリです:
+The **play new** command creates a new directory **helloworld/** and populates it with a series of files and directories, the most important being:
 
 **app/** contains the application’s core. It contains all the application ***.scala files**. You see that the default is a single **controllers.scala** file. You can of course use more files and organize them in several folders for more complex applications. Also the **app/views** directory is where template files live. A template file is generally a simple text, xml or html file with dynamic placeholders.
 
@@ -93,110 +93,121 @@ Let’s see how the **controllers.Application** controller looks like. Open the 
 
 bc. package controllers
  
+import play._
 import play.mvc._
  
-object Application Controller {
- 
-    def index = Template
- 
+object Application extends Controller {
+    
+    import views.Application._
+    
+    def index = {
+        html.index("Your new Scala application is ready!")
+    }
+    
 }
 
-You see that controller objects extend the **play.mvc.Controller** class. This class provides all useful methods for controllers. Also we have imported the @play.mvc._@ package that contain everything needed to write controllers, like the @Template@ value.
 
-The index action is defined as an, obejct method. This is how action methods are defined. They always return a value that is interpreted by the framework as the response value.  
+You see that controller objects extend the **play.mvc.Controller** class. This class provides all useful methods for controllers. Also we have imported the @play.mvc._@ package that contain everything needed to write controllers.
 
-The default index action is simple: it returns the @Template@ value which tells Play to render a template. Using a template is the most common way (but not the only one) to generate the HTTP response.
+The index action is defined as a simple method of this object. This is how action methods are defined. They always return a value that is interpreted by the framework as the response value.  
 
-Templates are simple text files that live in the **/app/views** directory. Because we didn’t specify a template, the default one for this action will be used: **Application/index.html**
+The default index action is simple: it invoke the *views.Application.html.index* template and returns the generated HTML. Using a template is the most common way (but not the only one) to generate the HTTP response.
 
-To see what the template looks like, open the **helloworld/app/views/Application/index.html** file:
+Templates are special Scala source files that live in the **/app/views** directory. 
 
-bc. #{extends 'main.html' /}
-#{set title:'Home' /}
+To see what the template looks like, open the **helloworld/app/views/Application/index.scala.html** file:
+
+bc. @(title:String)
  
-#{welcome /}
+@main(title) {
+    
+    @views.defaults.html.welcome(title)
+    
+}
 
-The template content seems pretty light. In fact, all you see are Play tags. Play tags are very close to JSP taglib. This is the **#{welcome /}** tag that generates the welcome message you’ve seen in the browser. 
+The template content seems pretty light. In fact, this is because it call other templates to generate the welcome page. 
 
-The **#{extends /}** tags tells Play that this template inherits another template called **main.html**. Template inheritance is a powerful concept that allows to create complex web pages by reusing common parts.
+The first line defines the template parameters: a template is a function that generates a *play.template.Html* return value. In this case, the template has a single @title@ parameter of type @String@, so the type of this template is @(String) => Html@.
 
-Open the **helloworld/app/views/main.html** template:
+Then this template call another template called @main@, that take two parameters: a @String@ and an @Html@ block.
 
-bc. <!DOCTYPE html>
+Open the **helloworld/app/views/main.scala.html** file that defines the @main@ template:
+
+bc. @(title:String = "")(body: => Html)
+ 
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>#{get 'title' /}</title>		
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <link rel="stylesheet" type="text/css" media="screen" 
-            href="@{'/public/stylesheets/main.css'}" />
-        <link rel="shortcut icon" type="image/png" 
-            href="@{'/public/images/favicon.png'}" />
-    </head>
-    <body>
-        #{doLayout /} 
-    </body>
+  <head>
+    <title>@title</title>
+    <link rel="stylesheet" href="@asset("public/stylesheets/main.css")">
+    <link rel="shortcut icon" href="@asset("public/images/favicon.png")">
+    <script src="@asset("public/javascripts/jquery-1.5.2.min.js")"></script>
+  </head>
+  <body>
+    @body
+  </body>
 </html>
 
-Can you see the **#{doLayout /}** tag? This is where the content of **Application/index.html** will be inserted.
+Again, the first line defines the template parameters. And the type of the @main@ template is @(String) (Html) => Html@
 
 h2. <a>Creating the form</a>
 
 We will start the ‘Hello World’ application with a form where you can enter your name.
 
-Edit the **helloworld/app/views/Application/index.html** template:
+Edit the **helloworld/app/views/Application/index.scala.html** template:
 
-bc. #{extends 'main.html' /}
-#{set title:'Home' /}
- 
-<form action="@{Application.sayHello()}" method="GET">
-    <input type="text" name="myName" /> 
-    <input type="submit" value="Say hello!" />
-</form> 
+bc. @main(title = "Home") {
+    <form action="@action(controllers.Application.sayHello)" method="GET">
+        <input type="text" name="myName" /> 
+        <input type="submit" value="Say hello!" />
+    </form>
+}
 
 p(note). Note that we use GET as form submission method, because the form submission does not have any side effect and is idempotent.
 
-We use the **@{…}** notation to ask Play to automatically generate the URL able to invoke the **Application.sayHello** action. Now, refresh the home page in the browser.
+We use the **@action(…)** helper to ask Play to automatically generate the URL able to invoke the **Application.sayHello** action. 
 
-!images/guide1-error!
-
-Oops, you get an error. This is because you reference the non-existent action **Application.sayHello**. Let’s create it in the **helloworld/app/controllers.scala** file:
+Also, let’s adapt our controller in the **helloworld/app/controllers.scala** file:
 
 bc. package controllers
  
+import play._
 import play.mvc._
  
 object Application extends Controller {
- 
-    def index = Template
     
-    def sayHello(myName:String) = Template('myName -> myName)
- 
+    import views.Application._
+    
+    def index = html.index()  
+    def sayHello = html.sayHello(params.get("myName"))
+    
 }
 
-We have declared the **myName** parameter in the action method signature, so it will automatically be filled with the value of the HTTP **myName** parameter, coming from the form submission. 
+In the @index@ action, we remove the parameter of the @html.index@ template as our new template doesn't need any parameter anymore. In the @sayHello@ action we retrieve the @myName@ parameter value coming from the form submission, and we pass it to the @html.sayHello@ template.
 
-This new action also returns a @Template@ value, but this time it specify a value to be included in the template. You can specify as many values you want to send to the template, and for each you need to specify the template variable name. So each value is specified as a @(Symbol, Any)@ tuple, where the first Symbol value will be used a template variable name.
+Now try to refresh the page in the browser, and oops, you will get an error:
 
-!images/guide1-page!
+!images/hello-1!
 
-Now, if you try to enter your name and submit the form, you will get another error:
+This is the way Play works! It will automatically compile your changes at each page refresh, and show you compilation and execution errors right into your browser.
 
-!images/guide1-error2!
+The error is pretty clear. We haven't defined the @html.sayHello@ template. Let’s create it in the file **helloworld/app/views/Application/sayHello.scala.html**:
 
-The error is pretty clear. Play tries to render the default template for this action method, but it doesn’t exist. Let’s create it in the file **helloworld/app/views/Application/sayHello.html**:
-
-bc. #{extends 'main.html' /}
-#{set title:'Home' /}
+bc. @(name:String)
  
-<h1>Hello ${myName ?: 'guest'}!</h1>
- 
-<a href="@{Application.index()}">Back to form</a>
+@main(title = "Hello") {
+    
+    <h1>Hello @(name ?: "Guest")!</h1>
+    
+    <a href="@action(controllers.Application.index)">Back to form</a>
+    
+}
 
 You can refresh the page.
 
 !images/guide1-page2!
 
-Look how we have used the **?:** operator in the template. It switches to a default value if the **myName** variable is not filled. So if you try to submit the form without entering any name, it will display ‘Hello guest’.
+Look how we have used the **?:** operator in the template. It switches to a default value if the **name** value is empty. So if you try to submit the form without entering any name, it will display ‘Hello guest’.
 
 h2. <a>Providing a better URL</a>
 
@@ -222,8 +233,7 @@ bc. ...
 <body>
     The Hello world app.
     <hr/>
-    
-    #{doLayout /}
+    @body
 </body>
 ...
 
@@ -238,19 +248,18 @@ We will add a little validation to the form, to make the name field required. We
 Edit the **helloworld/app/controllers.scala** file, and the **sayHello** action:
 
 bc. ...
-def sayHello(@Required myName:String) = {
-    if(validation.hasErrors) {
-        flash += "error" -> "Oops, please enter your name!"
+def sayHello = {
+    val myName = params.get("myName")
+    if(myName == "") {
+        flash += ("error" -> "Oops, please enter your name!")
         Action(index)
     } else {
-        Template("myName" -> myName)
+        html.sayHello(params.get("myName"))
     }
 }
 ...
 
-And don’t forget to import the **play.data.validation.Annotations._** values to get the **@Required** annotation. 
-
-Now our **sayHello** can return 2 distincts values. A @Template@ value in the case of there is a name provided by the form, or an @Action@ value if there is an error. An @Action@ value is used to redirect to another existing action method. Here we specify that we want to redirect to the @index@ action.
+Now our **sayHello** can return 2 distincts values. A @Html@ value in the case of there is a name provided by the form, or an @Action@ value if there is an error. An @Action@ value is used to redirect to another existing action method. Here we specify that we want to redirect to the @index@ action.
 
 Play will automatically check that the myName field is filled or will add an error object to the **errors** scope. Then if there is any error, we add a message to the **flash** scope and redirect to the **index** action.
 
@@ -258,23 +267,26 @@ The flash scope allows to keep messages during action redirection.
 
 Now you just have to display the **error** message if any. Edit the **helloworld/app/views/Application/index.html**:
 
-bc. #{extends 'main.html' /}
-#{set title:'Home' /}
+bc. @()(implicit flash:play.mvc.Scope.Flash)
  
-#{if flash.error}
+@if(flash.get("error")) {
     <p style="color:#c00">
-        ${flash.error}
+        @flash.get("error")
     </p>
-#{/if}
+}
  
-<form action="@{Application.sayHello()}" method="GET">
-    <input type="text" name="myName" /> 
-    <input type="submit" value="Say hello!" />
-</form>
+@main(title = "Home") {
+    <form action="@action(controllers.Application.sayHello)" method="GET">
+        <input type="text" name="myName" /> 
+        <input type="submit" value="Say hello!" />
+    </form>
+}
 
 And check that it works:
 
 !images/guide1-page4!
+
+See how we take implicitely the flash parameter from the controller scope.
 
 h2. <a>Writing an automated test suite</a>
 

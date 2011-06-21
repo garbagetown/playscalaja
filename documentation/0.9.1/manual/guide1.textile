@@ -1,36 +1,36 @@
-h1. Starting up the project
+h1. プロジェクト立ち上げ
 
-h2. <a>Introduction</a>
+h2. <a>はじめに</a>
 
-In this tutorial you will learn Play Scala by coding a real web application, from start to finish. In this application, we will try to use everything you would need in a real project, while introducing good practices for Play application development.
+このチュートリアルでは、Scala言語を使って、Playフレームワークベースのアプリケーションの開発を一通り学習することができます。このアプリでは、Playアプリケーション開発の実践を通して、実際のプロジェクトで必要とされるであろう、全てのことを試すことができます。
 
-We have split the tutorial into several independent parts. Each part will introduce more complex features, and provide everything that a real project needs: validation, error handling, a complete security framework, an automated test suite, a shiny web interface, an administration area, etc.
+このチュートリアルはいくつかの独立した章に分割しています。それぞれの章で、実際のプロジェクトで必要とされる、バリデーションや、エラーハンドリング、セキュリテリ対策、自動テスト、WEB画面、管理領域などの、より複雑な機能を紹介しています。
 
-p(note). **All the code** included in this tutorial can be used for your projects. We encourage you to copy and paste snippets of code or steal whole chunks.
+p(note). このチュートリアル内の **全てのソースコード** は、実際のプロジェクトで使ってもらって構いません。どんどんコードスニペットをコピペしたり、まるまる盗んだりしてください。
 
-h2. <a>The project</a>
+h2. <a>プロジェクト</a>
 
-We chose to create yet another blog engine. It’s not a very imaginative choice but it will allow us to explore most of the functionality needed by a modern web application. 
+チュートリアルのプロジェクとして、「yet another blog engine（ちょっと気の利いたブログエンジン）」を選択しました。あまり想像力に富んだ選択とは言えないけど、今どきのWEBアプリに求められているほとんどの機能を紹介することができます。
 
-To make things a bit more interesting, we will manage several users with different roles (editor, admin).
+編集者や管理者といったいくつかの違う権限ユーザを管理することで、このブログエンジンをより面白くすることができます。
 
-We will call this blog engine project **yabe**.
+このブログエンジンプロジェクトを **yabe** と呼ぶことにします。
 
 !images/guide1-0!
 
-p(note). This tutorial is also distributed as a sample application. You can find the final code in your Scala module installation’s **samples-and-tests/yabe/** directory.
+p(note). このチュートリアルは、サンプルアプリケーションとして提供されています。ソースコードは、Scalaモジュールがインストールされているディレクトリの、 **samples-and-tests/yabe/** 配下にあります。
 
-h2. <a>Installing the Play framework</a>
+h2. <a>Play frameworkのインストール</a>
 
-Installation is very simple. Just download the latest binary package from the download page and unzip it to any path. Note that the scala module requires at least *Play 1.2*.
+インストールはとても簡単です。ダウンロードページからバイナリパッケージをダウンロードして、それを解凍して適当なところに配置してください。Scalaモジュールは、Playフレームワークのバージョン *1.2* 以上からのみに対応となりますので、気をつけてください。
 
-p(note). If you’re using Windows, it is generally a good idea to avoid space characters in the path, so for example **c:\play** would be a better choice than **c:\Documents And Settings\user\play**.
+p(note). Windowsの場合は、 **c:\Documents And Settings\user\play** のように、パスの中にスペース文字を含めず、 **c:\play** とした方が賢明です。
 
-To work efficiently, you need to add the Play directory to your working path. It allows you to just type **play** at the command prompt to use the play utility. To check that the installation worked, just open a new command line and type **play**; it should show you the play basic usage help.
+効率的に作業するために、PlayディレクトリにPathを切っておく方がいいでしょう。これで、 **play** とコマンドプロンプトに入力するだけで、playユーティリティを使うことができます。インストールがうまく行っていることを確認するために、 **play** と打ってみましょう。基礎的な使い方についてのヘルプ画面が表示されます。
 
-h2. <a>Installing the Scala module locally</a>
+h2. <a>Scalaモジュールをインストール</a>
 
-The simpler way to work with Play and Scala is to download and install the Scala module locally. You can use the @play install scala@ command to do that:
+ScalaでPlayFrameworkを使うのは簡単で、Scalaモジュールをダウンロードするだけです。 @play install scala@ とコマンドを実行するだけで以下のようにインストール可能です。
 
 bc. $ play install scala
 ~        _            _ 
@@ -52,31 +52,31 @@ bc. $ play install scala
 ~
 ~ Module scala-0.9 is installed!
 
-h2. <a>Project creation</a>
+h2. <a>プロジェクト作成</a>
 
-Now that Play is correctly installed, it’s time to create the blog application. Creating a Play application is pretty easy and fully managed by the play command line utility. That allows for standard project layouts between all Play applications. 
+さて、Playを正しくインストールできたので、ブログアプリケーションを作り始めましょう。Playアプリを作るのはとても簡単で、Playコマンドラインのユーティリティで全て管理することができます。これによって、全てのPlayアプリケーションで、標準的なレイアウトが適用されることになるのです。
 
-Open a new command line and type:
+以下のようにコマンドを入力しましょう。
 
 bc. ~$ play new yabe --with scala
 
-It will prompt you for the application full name. Type **Yet Another Blog Engine**.
+アプリケーションのフルネームを入力するよう求められるので、 **Yet Another Blog Engine** と入力しましょう。
 
 !images/guide1-1!
 
-The **play new** command creates a new directory **yabe/** and populates it with a series of files and directories, the most important being:
+**play new** コマンドは、yabe/ ディレクトリを作成し、以下の重要なディレクトリやファイルを配置します。
 
-* **app/** contains the application’s core. This is the directory where **.scala** source files live.
+* **app/** ディレクトリは、アプリケーションのコア要素を格納するディレクトリです。 **.scala** ソースファイルが配置されるのもここです。 
 
-* **conf/** contains all the configuration files for the application, especially the main **application.conf** file, the **routes** definition files, the **dependencies.yml** file, and the **messages** files used for internationalization.
+* **conf/** ディレクトリは、アプリケーションの全ての設定ファイルが格納されます。メインとなるのは、 **application.conf** ファイルであり、他にも **routes** 定義ファイルや、 **dependencies.yml** ファイル、他言語化に使われる **messages** ファイルなどが格納されます。
 
-* **lib/** contains all optional Java or Scala libraries packaged as standard **.jar** files.
+* **lib/** ディレクトリには、 **.jar** ファイルとしてパッケージされた、ScalaライブラリやJavaライブラリが格納される。
 
-* **public/** contains all the publicly available resources, which includes JavaScript files, stylesheets and images directories.
+* **public/** ディレクトリには、パブリックに利用できるリソースを格納する。javascriptファイルや、スタイルシート、画像ファイルなどが含まれる。
 
-* **test/** contains all the application tests. Tests are either written either as ScalaTest tests or as Selenium tests.
+* **test/** ディレクトリには、アプリケーションの全てのテストコードが含まれる。テストコードはScalaTest、もしくはSeleniumテストとして記述される。
 
-As you see, the **conf/dependencies.yml** dependencies configuration file is automatically configured with the Scala dependency:
+このように、 **conf/dependencies.yml** という依存性を定義するファイルには、Scalaの依存性が自動的に定義されます
 
 bc. # Application dependencies
  
@@ -84,31 +84,31 @@ require:
     - play
     - play -> scala 0.9
 
-p(note). Because **Play uses UTF-8** as single encoding, it’s very important that all text files hosted in these directories are encoded using this charset. Make sure to configure your text editor accordingly.
+p(note). 唯一のエンコーディングとして **PlayはUTF-8を使っている** ため、全ての定義ファイルがUTF-8でエンコーディングされていることが重要になります。適宜、エディタのエンコーディングを設定してください。
 
-Now if you’re a seasoned Scala developer, you may wonder where all the .class files go. The answer is nowhere: Play doesn’t use any class files; instead it reads the Scala source files directly.
+さて、熟練のScalaプログラマなら.classファイルはどこに行くのかと考えるでしょう。答えは「どこにも行かない」です。Playは.classファイルを一切使わず、Scalaソースファイルを直接読み込みます。
 
-That allows two very important things in the development process. The first one is that Play will detect changes you make to any Scala source file and automatically reload them at runtime. The second is that when an exception occurs, Play will create better error reports showing you the exact source code.
+これは開発過程において、２つの重要な意味を持ちます。ひとつは、Scalaソースファイルの変更を検出し、実行中に自動的に再読み込みする、ということです。ふたつめは、Exceptionが発生した時に、Playは実際のScalaソースコードベースでエラーレポートを表示させることができる、ということです。
 
-p(note). In fact Play keeps a bytecode cache in the application’s **tmp/** directory, but only to speed things up between restart on large applications. You can discard this cache using the **play clean** command if needed.
+実際には、Playは **tmp/** ディレクトリにバイトコードキャッシュを保持しますが、大きなアプリケーションの再起動処理を高速化させるためだけのものです。必要とあらば、 **play clean** コマンドによってキャッシュをクリアすることができます。
 
-h2. <a>Running the application</a>
+h2. <a>アプリケーション稼働</a>
 
-We can now test the newly-created application. Just return to the command line, go to the newly-created **yabe/** directory and type **play run**. Play will now load the application and start a web server on port 9000.
+さて、新しく作ったアプリケーションを試してみましょう。 **yabe/** ディレクトリ内で、 **play run** コマンドを実行するだけでOKです。Playはアプリケーションをロードして、9000番ポートでWEBサーバを起動します。
 
-You can see the new application by opening a browser to "http://localhost:9000":http://localhost:9000. A new application has a standard welcome page that just tells you that it was successfully created.
+ブラウザでURLを "http://localhost:9000":http://localhost:9000 と指定することで新しいアプリケーションを確認することができます。新しく作ったアプリケーションは、デフォルトのWELCOMEページを用意していて、これが表示されたことで作成がうまくいったことが分かります。
 
 !images/guide1-2!
 
-Let’s see how the new application can display this page. 
+この新しいアプリケーションがどのようにこのページを表示しているのか見てみましょう。
 
-The main entry point of your application is the **conf/routes** file. This file defines all accessible URLs for the application. If you open the generated routes file you will see this first ‘route’:
+主な入り口は、 **conf/routes** ファイルになります。このファイルでは、全てのアクセス可能なURLを定義します。生成されたroutesファイルを参照すると、最初の「ルート」を確認することができます。
 
 bc. GET		/			Application.index
 
-That simply tells Play that when the web server receives a **GET** request for the **/** path, it must call the @Application.index@ action method. In this case, @Application.index@ is a shortcut for @controllers.Application.index@, because the controllers package is implicit. 
+これは、単純に、 **/** パスに対する **GET** リクエストを受け取ると、 @Application.index@ アクションメソッドを呼び出すということを意味します。このケースでは、 @Application.index@ は、 @controllers.Application.index@ へのショートカットとなります。controllersパッケージは暗黙的に解決されます。
 
-When you create standalone Scala applications you generally use a single object with an entry point defined by a @main@ method such as:
+スタンドアローンのScalaアプリを作る際には、以下のように @main@ メソッドによって入り口を定義されたシングルオブジェクトを一般的には使います。
 
 bc. object Main {
     def main(args: Array[String]) {
@@ -116,9 +116,9 @@ bc. object Main {
     }
 }
 
-A Play application has several entry points, one for each URL. We call these methods **action** methods. Action methods are defined in special objects that we call **controllers**.
+Playアプリでは、それぞれのURLにくくり付く、いくつかの入り口を持ちます。これを **アクションメソッド** と呼びます。アクションメソッドは、 **コントローラ** という特別なオブジェクトで定義されます。
 
-Let’s see what the @controllers.Application@ controller looks like. Open the **yabe/app/controllers.scala** source file:
+@controllers.Application@ コントローラがどのようなものか見てみましょう。 **yabe/app/controllers.scala** ソースファイルを開きます。
 
 bc. package controllers
  
@@ -135,15 +135,15 @@ object Application extends Controller {
     
 }
 
-Notice that controller objects extend the @play.mvc.Controller@ class.
+@play.mvc.Controller@ クラスを継承していることに気づくと思います。
 
-The index action is defined as a simple method of this object. This is how action methods are defined. They always return a value that will be infered by the framework to generate the proper HTTP response.  
+このindexアクションは、このオブジェクトの単なるメソッドとして定義されます。これがアクションメソッドの定義方法です。アクションメソッドは、フレームワークによって、純粋なHTTPレスポンスに暗黙的に変換される値を常に返します。
 
-The default index action is simple: it invoke the *views.Application.html.index* template and returns the generated HTML. Using a template is the most common way (but not the only one) to generate the HTTP response.
+デフォルトのindexアクションはシンプルです。 *views.Application.html.index* を呼び出し、そこから生成されるHTMLを応答します。テンプレートを使うのはHTTPレスポンスを生成するのに最も一般的な方法になります。（唯一の方法ではありません）
 
-Templates are special Scala source files that live in the **/app/views** directory. 
+テンプレートは、 **/app/views** に配置された、Scalaソースファイルになります。
 
-To see what the template looks like, open the **helloworld/app/views/Application/index.scala.html** file:
+テンプレートファイルを見てみましょう。 **helloworld/app/views/Application/index.scala.html** を開きます。
 
 bc. @(title:String)
  
@@ -153,13 +153,13 @@ bc. @(title:String)
     
 }
 
-The template content seems pretty light. In fact, this is because it call other templates to generate the welcome page. 
+テンプレートの中身は実に簡単に見えますね。実際、これは他のテンプレートを呼び出し、Welcomeページを生成しているのです。
 
-The first line defines the template parameters: a template is a function that generates a *play.template.Html* return value. In this case, the template has a single @title@ parameter of type @String@, so the type of this template is @(String) => Html@.
+一行目はテンプレートの引数を定義しています。 *play.template.Html* を生成する関数をテンプレートとしているという定義になります。この場合、テンプレートはString型の @title@ 引数を持っていて、テンプレートの型は、 @(String) => Html@ となります。
 
-Then this template call another template called @main@, that take two parameters: a @String@ and an @Html@ block.
+そして、このテンプレートは ２つの引数（ @String@ と @Html@ ブロック）を要求する、 @main@ という別のテンプレートを呼び出します。
 
-Open the **helloworld/app/views/main.scala.html** file that defines the @main@ template:
+mainテンプレートが定義されている、 **helloworld/app/views/main.scala.html** を見てみましょう。
 
 bc. @(title:String = "")(body: => Html)
  
@@ -176,26 +176,26 @@ bc. @(title:String = "")(body: => Html)
   </body>
 </html>
 
-Again, the first line defines the template parameters. And the type of the @main@ template is @(String) (Html) => Html@
- 
-We can try to edit the controller file to see how Play automatically reloads it. Open the **yabe/app/controllers.scala** file in a text editor, and add a mistake:
+ここでも一行目はテンプレートのパラメータを定義しています。 @main@ テンプレートの型は @(String) (Html) => Html@ になります。
+
+コントローラファイルを編集することで、Playフレームワークがどのようにリロードするかを確認することができます。 **yabe/app/controllers.scala** を開いて、間違いを埋め込んでみましょう。
 
 bc. def index = html.index()
 
-Go to the browser and refresh the page. You can see that Play detected the change and tried to reload the Application controller. But because you made a mistake, you get a compilation error. 
+ブラウザを開いて、リロードしてみてください。Playフレームワークが変更を反映して、アプリケーションコントローラをリロードしようとしていることが確認できます。しかし埋め込んだ間違いのために、コンパイルエラーになります。
 
 !images/guide1-3!
 
-Ok, let’s correct the error, and make a real modification:
+では、プログラムを修正し、正しく編集しましょう。
 
 bc. def index = {
     Logger.info("Index page has been requested")
     html.index("Your new Scala application is ready!")
 }
 
-This time, Play has correctly reloaded the controller and replaced the old code in the JVM. Each request to the **/** URL will log the ‘Index page has been requested’ message to the console.
+この時、Playフレームワークはコントローラを正しくリロードし、JVM内の古いコードを置き換えます。 **/** URL宛へのリクエストが発生するたびに、コンソール上に「Index page has been requested」というメッセージが表示されます。
 
-You can remove this useless line, and now edit the **yabe/app/views/Application/index.scala.html** template to replace the welcome message:
+この無駄な行を消して、 **yabe/app/views/Application/index.scala.html** テンプレートを編集し、Welcomeメッセージを置き換えましょう。
 
 bc. @main("Home") {
     
@@ -203,29 +203,29 @@ bc. @main("Home") {
     
 }
 
-And because we have remover the parameters of this template, fix the controller:
+テンプレートの引数を削除したので、コントローラを修正します。
 
 bc. def index = {
     html.index()
 }
 
-h2. <a>Setting-up the database</a>
+h2. <a>DBのセットアップ</a>
 
-One more thing before starting to code. For the blog engine, we will need a database. For development purposes, Play comes with a stand alone SQL database management system called H2. This is the best way to start a project before switching to a more robust database if needed. You can choose to have either an in-memory database or a filesystem database that will keep your data between application restarts. 
+開発を始める前に、もうひとつやらなければならないことがあります。ブログエンジンにはデータベースが必要です。開発用にPlayフレームワークはH2というスタンドアローンのDB管理システムを持っています。きちんとしたDBに切り替える前に、プロジェクトをスタートするには、ベストな手法となります。アプリケーションの再起動をまたいでデータを保持したいか、そうでないかで、ファイルシステムデータベースか、インメモリデータベースかを選ぶことができます。
 
-At the beginning, we will do a lot of testing and changes in the application model. For that reason, it’s better to use an in-memory database so we always start with a fresh data set.
+最初は、モデルを何回も変更したりテストしたりするため、アプリ起動の度にデータをリフレッシュするインメモリデータベースを使うのがいいでしょう。
 
-To set-up the database, open the **yabe/conf/application.conf** file and uncomment this line:
+データベースをセットアップするために、 **yabe/conf/application.conf** を開いて、以下の行のコメントをはずしてください。
 
 bc. db=mem
 
-As you can see in the comments, you can easily set-up any JDBC compliant database and even configure the connection pool.
+コメントを見れば分かるように、JDBC接続に簡単に切り替えることができるし、コネクションプールさえ設定することができる。
 
-Now, go back to your browser and refresh the welcome page. Play will automatically start the database. Check for this line in the application logs:
+さて、ブラウザに戻りwelcomeページをリロードしてみましょう。Playフレームワークはデータベースを自動的にスタートさせます。以下のログが出力されることを確認してください。
 
 bc. INFO  ~ Connected to jdbc:h2:mem:play
 
 <hr>
 
-p(note). Go to the %(next)"A first iteration of the data model":guide2%. 
+p(note). 次は %(next)"データモデルの最初のイテレーション":guide2%. 
 

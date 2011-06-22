@@ -1,22 +1,22 @@
-h1. A first iteration for the data model
+h1. データモデルの最初のイテレーション.
 
-Here we will start to write the model for our blog engine.
+ここではブログエンジンのデータモデルを作りましょう。
 
-h2. <a>Introduction to Anorm</a>
+h2. <a>Anormの紹介</a>
 
-The model layer has a central position in a Play application (and in fact in all well-designed applications). It is the domain-specific representation of the information on which the application operates. As we want to create a blog engine, the model layer will certainly contain classes like User, Post and Comment.
+モデル層はPlayアプリケーション（に限らず全てのきちんと設計されたアプリケーション）において中心的な位置づけとなります。アプリケーションが扱う、ドメイン固有の情報表現となります。ブログエンジンをつくるので、モデル層にはUserクラス、Postクラス、Commentクラスが含まれます。
 
-Because most model objects need to survive between application restarts, we have to save them in a persistent datastore. A common choice is to use a relational database. 
+ほとんどのモデルオブジェクトは、アプリケーションの起動をまたがって保持し続けたいので、我々はそれを永続データベースに保存する必要があります。一般的にはリレーショナルデータベースが選択されます。
 
-The Scala module includes a brand new data access layer called "Anorm":anorm that uses plain SQL to make your database requests and provides several API to parse and transform the resulting dataset. 
+Scalaモジュールは、"Anorm":anorm という全く新しいデータアクセス層を持ちます。AnormはデータベースリクエストのためにプレーンなSQLを使い、データセットを解析・変換するためのいくつかのAPIを提供します。
 
-There are several ways to use *Anorm*, depending of your needs. In this tutorial we will use the most advanced one where we will automatically map the result of our SQL queries to a set of *case classes* representing our data.
+*Anorm* は、ニーズに応じていくつかの使い方があります。ここでは、SQLクエリ結果を、データを表現するための **Caseクラス** のセットに自動的にマッピングする、一歩進んだ使い方を紹介します。
 
-h2. <a>The User model</a>
+h2. <a>Userモデル</a>
 
-We will start to code the blog engine by creating the User model.
+ブログエンジンの開発の手始めに、Userモデルを作りましょう。
 
-First we need to create the *User* table in the database. We will use the Play *evolutions* feature to organize our SQL schema modification: create a new evolution file *db/evolutions/1.sql* that contains the following SQL script:
+最初に、データベースに *User* テーブルを作成する必要があります。Playフレームワークの、SQLスキーマの変更を再編成する *エボリューション機能* を使います。以下のSQLスクリプトを記述した、 *db/evolutions/1.sql*　ファイルを作成してください。
 
 bc. # Users schema
  
@@ -35,13 +35,14 @@ CREATE TABLE User (
  
 DROP TABLE User; 
 
-Refresh the home page of your application to make Play detect and apply this evolution.
 
-p(note). As we use an in-memory database here, and because it is empty, Play will automatically apply this evolution without warning. Check for the following log statement in your console:
+アプリケーションのトップページをリロードして、Playフレームワークにこのスクリプトを適用させます。
+
+p(note). ここではインメモリデータベースを使います。データはまだ空なので、Playフレームワークはワーニングを出力せず自動的にスクリプトを適用します。以下のログ出力をコンソール上で確認してください
  
 @INFO  ~ Automatically applying evolutions in in-memory database@
 
-Now we need to write the Scala representation of the User model. Create a new file **/yabe/app/models.scala**, and declare a first implementation of the *User* class:
+さて、 UserモデルのScalaクラスを用意しなければなりません。 **/yabe/app/models.scala** ファイルを作成し、 *User* クラスの最初の実装を記述してください。
 
 bc. package models
  
@@ -55,37 +56,37 @@ case class User(
     email: String, password: String, fullname: String, isAdmin: Boolean
 )
 
-As you see, this User *case class* match our User table definition; it will help us to parse the result of our SQL queries involving the User table.
+このように、Userの *Caseクラス* はテーブル定義と一致します。これは、Userテーブルを扱うSQLクエリ結果を解析するのに便利です。
 
-Now we will also define a *companion object* for the User class:
+さて、Userクラスのコンパニオンオブジェクトも用意しましょう。
 
 bc. object User extends Magic[User]
 
-p(note). You also need to import @play.db.anorm.defaults._@ to have access to the @Magic@ type.
+p(note). @Magic@型を使うには、 @play.db.anorm.defaults._@ をインポートしておく必要があります。
 
-This *User* object inherits *Magic* that analyses the type it is parametrized by, and then offers a set of functionalities for parsing and running SQL queries. 
+この *User* オブジェクトは、 *Magic* オブジェクトを継承しています。Magicオブジェクトは、パラメータを決める型を分析し、SQLクエリを解析・実行するための機能群を提供します。
 
-You can now refresh the application home page to see the result. In fact, unless you made a mistake, you should not see any change: Play has automatically compiled and loaded the User class, but this has not added any new feature to the application.
+アプリケーションのトップページをリロードすると結果を確認できます。実際には、間違っていない限り、変化を確認する必要はありません。Playフレームワークは自動的にUserクラスをコンパイルし、ロードしますが、この段階でアプリケーションに機能が追加されるわけでは無いからです。
 
-h2. <a>Writing the first test</a>
+h2. <a>最初のテストを書く</a>
 
-A good way to test the newly created User class is to write a test case. It will allows you to incrementally complete the application model and ensure that all is fine.
+新しく作ったUserクラスをテストするには、テストケースを書くのがいいです。それによって、都度都度アプリケーションが正しく、完璧に稼働することを確認することができます。
 
-To run a test case, you need to start the application in a special “test” mode. Stop the currently running application, open a command line and type:
+テストケースを稼働させるためには、テストモードでの起動が必要です。今稼働しているアプリケーションを停止させて、コマンドラインで以下のように入力してください。
 
 bc. ~$ play test
 
-The **play test** command is almost the same as **play run**, except that it loads a test runner module that allows you to run test suites directly from a browser. 
+**play test** コマンドは、 **play run** コマンドとほとんど同じです。違うのは、テストケースをブラウザから直接稼働させることができるテストランナーモジュールをロードすることです。
 
-p(note). When you run a Play application in **test mode**, Play will automatically switch to the **test** framework ID and load the **application.conf** file accordingly. Check the "framework ID documentation":ids for more information.
+p(note). **テストモード** でアプリケーションを稼働させるとき、Playフレームワークはテスト用フレームワークIDへ切り替えを行い、それに応じた　**application.conf**　ファイルをロードします。詳しくは、"framework ID documentation":ids を参照してください。
 
-Open a browser to the "http://localhost:9000/@tests":http://localhost:9000/@tests URL to see the test runner. Try to select all the default tests and run them; all should be green… But these default tests don’t really test anything.
+ブラウザで、 "http://localhost:9000/@tests":http://localhost:9000/@tests にアクセスし、テストランナーを確認してください。デフォルトのテストを全て選択して実行してみてください。オールグリーンになるはずです。ただ、デフォルトのテストは実体は何もテストしていません。
 
 !images/guide2-1!
 
-The scala module is bundled with the "scalatest":http://www.scalatest.org framework.
+Scalaモジュールは、 "ScalaTestフレームワーク":http://www.scalatest.org をバンドルしています。
 
-To test the model part of the application we will use a behavior driven test. As you can see, a default **Tests.scala** file already exists, so let’s open it (**/yabe/test/Tests.scala**):
+アプリケーションのモデル部分のテストをするには、振舞起動テストを使います。以下のようにデフォルトの **Tests.scala** ファイルは既に存在しています。 **/yabe/test/Tests.scala** ファイルを開いてみましょう。
 
 bc. import play._
 import play.test._
@@ -104,7 +105,7 @@ class BasicTests extends UnitFlatSpec with ShouldMatchers {
  
 }
 
-Remove the useless default test (**it should "run this dumb test"**) and create a test that tries to create a new user and retrieve it:
+不要なテスト **it should "run this dumb test"** を削除し、ユーザを登録して取得し直すテストを作ってみましょう。
 
 bc. import models._    
 import play.db.anorm._
@@ -122,17 +123,17 @@ it should "create and retrieve a User" in {
    
 }
 
-As you can see, the User companion object gives us the @create(u:User)@ and @find(sql:String)@ methods. 
+見て分かるように、Userコンパニオンオブジェクトは、 @create(u:User)@ と @find(sql:String)@ というメソッドを提供しています。
 
-Note also that we use @NotAssigned@ as id value because the User table declare the *id* column as auto-generated.
+Userテーブルの *id* カラムは、自動生成列として宣言されているので、 @NotAssigned@ がidの値として使われています。
 
-p(note). You can read more about the Magic methods in the Play manual’s "Anorm":anorm chapter.
+p(note). Magicクラスのメソッドについては、Playフレームワークのマニュアルの、 "Anorm":anorm の章を参照してください。
 
-Select the **BasicTests** in the test runner, click start and check that all is green. 
+テストランナーの中で、 **BasicTests** を選択し、Startをクリックして、オールグリーンとなることを確認してください。
 
-We will need a method on the User class that checks if a user with a specified username and password exists. Let’s write it and test it.
+特定のユーザ名とパスワードが存在することをチェックするメソッドが必要なのでそれを書いて、テストしましょう。
 
-In the **models.scala** source file, add the **connect()** method to the @User@ object:
+**models.scala** の中に、Userオブジェクトを応答する **connect()** メソッドを追加しましょう。
 
 bc. object User extends Magic[User] {
     
@@ -144,7 +145,7 @@ bc. object User extends Magic[User] {
     
 }
 
-And now the test case:
+テストケースはこんな感じ。
 
 bc. it should "connect a User" in {
     
@@ -156,13 +157,13 @@ bc. it should "connect a User" in {
     
 }
 
-Each time you make a modification you can run all the tests from the Play test runner to make sure you didn’t break anything. 
+修正する度にテストランナーで全てのテストを走らせば、アプリケーションを一切壊さずに済ませることができます。
 
-h2. <a>The Post model</a>
+h2. <a>Postモデル</a>
 
-The **Post** model will represent blog posts. 
+Postモデルはブログ投稿を表示することができます。
 
-As for User, we need to create the Post table in the database. It will be our second database evolution. So create the *db/evolutions/2.sql* with the following script:
+Userモデルと同様に、Postテーブルをデータベース内に作らないといけません。これは二つ目のデータベースのevolutionになります。以下のスクリプトを記述した、 *db/evolutions/2.sql* ファイルを作成します。
 
 bc. # --- !Ups
  
@@ -180,11 +181,11 @@ CREATE TABLE Post (
  
 DROP TABLE Post;
 
-This time, as our database is not empty anymore, Play will ask you before applying this evolution:
+この時、データベースは空ではありません。Playフレームワークは、このevolutionを適用する前に、適用していいかどうか問い合わせます。
 
 !images/guide2-12!
 
-Now, we will map this table to a Scala class:
+そして、このテーブルをScalaクラスにマッピングします。
 
 bc. case class Post(
     id: Pk[Long], 
@@ -193,13 +194,13 @@ bc. case class Post(
  
 object Post extends Magic[Post]
 
-p(note). As the @Post@ class use it, you need to import @java.util.Date@ in the scope:
+p(note). この @Post@ クラスを使うには、 @java.util.Date@ をインポートしておいてください。
  
 @import java.util.{Date}@
 
-We will write a new test case to check that the **Post** model works as expected. But before writing more tests, we need to do something in our test. In the current test, the database content is never deleted, so each new run creates more and more objects. This will soon become problematic, when more advanced tests will count objects to check that all is fine.
+**Post** モデルが期待通り動くか確認するテストを作りましょう。しかしもっとテストを書く前に、テストの中でやらなければならないことがあります。今のテストでは、データベースの内容が削除されず、いちいち新しいテストが稼働するたびに、オブジェクトがどんどん作られて行ってしまいます。より複雑なテストがオブジェクトをカウントして正しい挙動を確認するようになると、この問題はすぐに顕在化してきます。
 
-So we need to delete the database before each test. Mix your test class with the @BeforeAndAfterEach@ trait, and override the @beforeEach@ method definition:
+なので、テストの度にデータベースを削除しておく必要があります。 @BeforeAndAfterEachtrait@ をテストクラスにミックスインして、 @beforeEach@ メソッドをオーバーライドしてください。
 
 bc. … extends UnitFlatSpec with ShouldMatchers with BeforeAndAfterEach {
     
@@ -212,7 +213,7 @@ bc. … extends UnitFlatSpec with ShouldMatchers with BeforeAndAfterEach {
     
     …
 
-As you can see, the **Fixtures** class is a helper to deal with your database during tests. Run the test again to check that you haven’t broken anything, and start to write the next test:
+このように、 **Fixtures** クラスはテスト中にデータベースを扱うヘルパーの役割を担います。テストをもう一度稼働させて、何も壊していないことを確認した後、次のテストを記述しましょう。
 
 bc. it should "create a Post" in {
     
@@ -234,19 +235,17 @@ bc. it should "create a Post" in {
     
 }
 
-Now if we think about our use case we probably want to fetch each post with his author to be able to display this information on the home page. So let's create a new method in the *Post* object that allows to fetch Post and corresponding User objects in a single query.
-
-First, here is the SQL query we need:
+さて、我々の使い方を考えると、各Post記事が作成者のホームページにくくり付いているようにしたくなりますよね。では、Postオブジェクトに、ひとつのクエリでUserオブジェクトと *Post* オブジェクトをくくり付かせるメソッドを追加しましょう。
 
 bc. select * from Post p 
 join User u on p.author_id = u.id 
 order by p.postedAt desc
 
-It is a simple join on the *author_id* column.
+これは *author_id* カラムで行う単純なJOINです。
 
-p(note). If you want to test SQL statements, you can open "http://localhost:9000/@db":http://localhost:9000/@db to access the SQL console.
+p(note). もしSQL文をテストしたければ、 "http://localhost:9000/@db":http://localhost:9000/@db で、SQLコンソールににアクセスすることができます。
 
-Let's add a Scala method that executes this query to the @Post@ object:
+@Post@ オブジェクトに、SQLクエリを実行するメソッドを追加しましょう。
 
 bc. def allWithAuthor:List[(Post,User)] = 
     SQL(
@@ -257,15 +256,15 @@ bc. def allWithAuthor:List[(Post,User)] =
         """
     ).as( Post ~< User ^^ flatten * )
 
-Here we use a *parser* to parse and transform the JDBC result set as a @List[(Post,User)]@ structure. The parser here is pretty simple:
+ここでは、JDBCの結果を @List[(Post,User)]@ として解析して変換する *パーサー* を使っています。ここのパーサーは非常にシンプルです。
 
-* For each row it parses a @Post@ followed by a @User@
-* @flatten@ transforms @Post~User@ into a simpler @(Post,User)@ structure (it will be simpler to use in our templates)
-* We repeat this for each row using @*@
+* 行毎に @Post@ データを @User@ に括り付ける。
+* @flatten@ は @Post~User@ をよりシンプルな @(Post,User)@ 構造にに変換。（テンプレートを使うよりもシンプルになります）
+* @*@ を使うことで、行毎にこれを繰り返す
 
-The final parser is written @Post ~< User ^^ flatten *@.
+最後のパーサーは @Post ~< User ^^ flatten *@ と記述します。
 
-Finally let's add the corresponding test:
+最後に、突合テストを追加しましょう。
 
 bc. it should "retrieve Posts with author" in {
     
@@ -282,11 +281,11 @@ bc. it should "retrieve Posts with author" in {
     author.fullname should be ("Bob")
 }
 
-h2. <a>Adding Comments</a>
+h2. <a>コメントを追加</a>
 
-The last thing that we need to add to this first model draft is the ability to attach comments to posts.
+ドラフト版モデルに最後に追加しなければいけないのは、Postに対してコメントを付ける機能です。
 
-As usual, create an evolution script to update your database schema, *db/evolutions/3.sql*:
+いつものように、evolutionスクリプトを作成し、データベーススキーマを更新してください。スクリプトファイルは、 *db/evolutions/3.sql* になります。
 
 bc. # --- !Ups
  
@@ -304,7 +303,7 @@ CREATE TABLE Comment (
  
 DROP TABLE Comment;
 
-Reload, and apply the evolution. Now create the corresponding Scala structure:
+リロードして、evolutionを適用してください。そして、突合構造を作ります。
 
 bc. case class Comment(
     id: Pk[Long], 
@@ -313,7 +312,7 @@ bc. case class Comment(
  
 object Comment extends Magic[Comment]
 
-We will also add new methods to the *Post* object, to retrieve posts with the corresponding comment collection. First the method that retrieves all posts:
+また、 *Post* オブジェクトに新しいメソッドを追加します。コメントリストと一緒にPostデータを取得するためのメソッドです。最初のメソッドは全件取得するメソッドです。
 
 bc. def allWithAuthorAndComments:List[(Post,User,List[Comment])] = 
     SQL(
@@ -325,9 +324,9 @@ bc. def allWithAuthorAndComments:List[(Post,User,List[Comment])] =
         """
     ).as( Post ~< User ~< Post.spanM( Comment ) ^^ flatten * )
 
-Here our parser it a bit more complicated. @Post.spanM( Comment )@ will span several rows and extract the comments list for each post.
+ここでは、パーサーは少し複雑です。 @Post.spanM( Comment )@ はいくつかの行を拡張し、Post毎にコメントリストを抜き取ります。
 
-And then another method that returns an @Option[(Post,User,List[Comment])]@ from a Post id:
+もうひとつのメソッドは、Postのidから @Option[(Post,User,List[Comment])]@ を応答するメソッドです。
 
 bc. def byIdWithAuthorAndComments(id: Long):Option[(Post,User,List[Comment])] = 
     SQL(
@@ -339,7 +338,7 @@ bc. def byIdWithAuthorAndComments(id: Long):Option[(Post,User,List[Comment])] =
         """
     ).on("id" -> id).as( Post ~< User ~< Post.spanM( Comment ) ^^ flatten ? )
 
-Now it's time to test these new methods by writing a test case:
+さて、これらのメソッドをテストする時間です。
 
 bc. it should "support Comments" in {
     
@@ -362,9 +361,9 @@ bc. it should "support Comments" in {
     
 }
 
-Is it green?
+うまくいきましたか？
 
-Finally, we will add a helper method to the **Comment** object to simplify adding comments:
+最後に、コメント追加をシンプルにするヘルパーメソッドを **Comment** オブジェクトに追加します。
 
 bc. object Comment extends Magic[Comment] {
     
@@ -374,11 +373,11 @@ bc. object Comment extends Magic[Comment] {
     
 }
 
-h2. <a>Using Fixtures to write more complicated tests</a>
+h2. <a>Fixturesを使ってもっと複雑なテストを</a>
 
-When you start to write more complex tests, you often need a set of data to test on. Fixtures let you describe your model in a "YAML":http://en.wikipedia.org/wiki/Yaml file and load it at any time before a test.
+もっと複雑なテストを書き出した時、データのセットがしばしば必要になります。Fixturesは "YAML":http://en.wikipedia.org/wiki/Yaml ファイルにモデルを記述し、テスト前にいつでもロードします。
 
-Edit the **/yabe/test/data.yml** file and start to describe a User:
+**/yabe/test/data.yml** を編集し、Userを記述しましょう。
 
 bc. 
 - !!models.User
@@ -390,9 +389,9 @@ bc.
  
 ...
 
-Well, because the **data.yml** file is a litle big, you can "download it here":files/data.yml.
+このファイルはちょっと大きいので、 "ここから":files/data.yml ダウンロードしてください。
 
-Loading this Yaml file is pretty easy:
+Yamlファイルのロードはとても簡単です。
 
 bc. Yaml[List[Any]]("data.yml").foreach { 
     _ match {
@@ -402,9 +401,9 @@ bc. Yaml[List[Any]]("data.yml").foreach {
     }
 }
 
-The @Yaml@ helper transforms the Yaml data into class instances, and we use than the @Magic@ objects to insert these instances into the database.
+@Yaml@ ヘルパーは、Yamlデータをクラスインスタンスの中に転送し、これらのインスタンスをデータベースに入れ込む @Magic@ オブジェクトの代わりに使えます。
 
-Now we create a test case that loads these data and runs some assertions over it:
+さて、データをロードし、いくつかのチェックを行うテストを作りましょう。
 
 bc. it should "load a complex graph from Yaml" in {
     
@@ -452,6 +451,6 @@ bc. it should "load a complex graph from Yaml" in {
 
 <hr>
 
-We have now finished a huge part of the blog engine. Now that we have created and tested all these things, we can start to develop the web application itself.
+これでブログエンジンの大部分は完了です。これでWebアプリケーションそのものを作成し、テストすることができるようになりました。
 
-p(note). Go to the %(next)"Building the first screen":guide3%. 
+p(note). 次は、 %(next)"初めての画面開発":guide3%. 

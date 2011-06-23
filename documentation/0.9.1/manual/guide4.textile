@@ -1,10 +1,10 @@
-h1. Viewing and posting comments
+h1. コメントの投稿と表示
 
-The blog home page is now set, and we will continue by writing the post details page. This page will show all the comments about the current post, and will include a form to post new comments.
+ブログのホームページは出来上がっているので、続いてPost詳細ページをコーディングします。このページは今のPostに対する全てのコメントを表示し、新しいコメントを投稿するフィールドを含めます。
 
-h2. <a>Creating the ‘show’ action</a>
+h2. <a>showアクション作成</a>
 
-To display the post details page, we will need a new action method on the **Application** controller. Let’s call it **show**:
+Post詳細ページを表示するために、 **Application** コントローラーに新しいActionが必要です。 **show** アクションとしてこれを作りましょう。
 
 bc. def show(id: Long) = {
     Post.byIdWithAuthorAndComments(id).map {
@@ -14,11 +14,11 @@ bc. def show(id: Long) = {
     }
 }
 
-As you can see this action is pretty simple. We declare the **id** method parameter to automatically retrieve the HTTP **id** parameter as a **Long** Scala value. This parameter will be extracted either from the query string, from the URL path or from the request body.
+このようにshowアクションはとてもシンプルです。 **Long** 型のScala値としてHTTPの **id** パラメータを自動的に受け取るメソッドパラメータを **id** として宣言しています。このパラメータは、クエリストリングか、URLパスか、リクエスト電文のBody部かのいずれかから引き抜かれます。
 
-p(note). If we try to send an **id** HTTP parameter that is not a valid number, Play will automatically add a validation error to the **errors** container.
+p(note). もし送信したHTTPパラメータの **id** が、数値型でなければ、errorsコンテナにバリデーションエラーを自動的に加えます。
 
-This action will display the **/yabe/app/views/Application/show.scala.html** template:
+このアクションは **/yabe/app/views/Application/show.scala.html** テンプレートを表示します。
 
 bc. @(post:(models.Post,models.User,Seq[models.Comment]))
  
@@ -28,13 +28,13 @@ bc. @(post:(models.Post,models.User,Seq[models.Comment]))
     
 }
 
-Because we’ve already written the **display** function, this page is really simple to write.
+**display** 関数は既に作ってあるので、このページはとてもシンプルに書けます。
 
-h2. <a>Adding links to the details page</a>
+h2. <a>詳細ページにリンクを追加</a>
 
-In the display tag we’ve left all links empty (using **#**). It’s now time to make these links point to the **Application.show** action. With Play you can easily build links in a template using the **action(…) helper**. It uses the router to ‘reverse’ the URL needed to call the specified action. 
+displayタグの中では、全てのリンクは **＃** を使って空にしてあります。 **Application.show**アクションにリンクポイントを設定しましょう。Playフレームワークでは、テンプレートの中で **actionヘルパー** を使うことで簡単にリンクを構築することができます。
 
-Let’s edit the **/yabe/app/views/tags/display.scala.html** tag:
+**/yabe/app/views/tags/display.scala.html** のタグを編集してみましょう。
 
 bc. ...
 <h2 class="post-title">
@@ -44,11 +44,11 @@ bc. ...
 </h2>
 ...
 
-You can new refresh the home page, and click a post title to display the post.
+ホームページをリロードし、Postタイトルをクリックし、Postページを表示してください。
 
 !images/guide4-0!
 
-It’s great, but it lacks a link to go back to the home page. Edit the **/yabe/app/views/main.scala.html** template to complete the title link:
+すばらしい、ですが、ホームページに戻るリンクがありませんね。 **/yabe/app/views/main.scala.html** テンプレートを編集し、タイトルリンクを完成させましょう。
 
 bc. ...
 <div id="title">
@@ -62,31 +62,31 @@ bc. ...
 </div>
 ... 
 
-We can now navigate between the home page and the post detail pages.
+これでホームページとPost詳細ページの間をナビゲートすることができるようになりました。
 
-h2. <a>Specifying a better URL</a>
+h2. <a>URLをもう少しよくしましょう。</a>
 
-As you can see, the post detail page URL looks like:
+見て分かるように、Post詳細ページのURLは以下のような具合です。
 
 bc. /application/show?id=1
 
-This is because Play has used the default ‘catch all’ route.
+Playフレームワークはデフォルトの、「catch all」ルートを使っているからです。
 
 bc. *       /{controller}/{action}                  {controller}.{action}
 
-We can have a better URL by specifying a custom path for the **Application.show** action. Edit the **/yabe/conf/routes** file and add this route after the first one:
+**Application.show** アクションへのカスタムパス特定することによって、URLを良くすることができます。 **/yabe/conf/routes** ファイルを編集し、最初のものの後ろに、以下のルートを追加してください。
 
 bc. GET     /posts/{id}                             Application.show
 
-p(note). This way the **id** parameter will be extracted from the URL path. 
+p(note). この方法では、URLパスから **id** が取得されます。
 
-Refresh the browser and check that it now uses the correct URL.
+ブラウザを再読み込みして、挙動を確認してください。
 
-h2. <a>Adding pagination</a>
+h2. <a>ページングを追加</a>
 
-To allow users to navigate easily through posts, we will add a pagination mechanism. We’ll extend the Post class to be able to fetch previous and next post as required.
+Postを簡単にナビゲーションするために、ページングの仕掛けを追加しましょう。Postクラスを拡張して、前と次をくくり付けられるようにします。
 
-Here is the SQL query we will use to fetch both previous and next post from a particular element:
+ここにあるSQLクエリは、特定のエレメントから前と次のPostを括り付けるために使うものです。
 
 bc. (
     select *, 'next' as pos from post 
@@ -100,11 +100,11 @@ bc. (
  
 order by postedAt desc
 
-And we will translate the result as a @(Option[Post], Option[Post])@ value, where the first element of the tuple is the previous post, and the second element is the next post:
+そしてクエリ結果を @(Option[Post], Option[Post])@ の値に変換させます。このふたつのうち、一つ目が前の要素がPostで、二つ目の要素が次のPostに該当します。
 
 bc. opt('pos.is("prev") ~> Post.on("")) ~ opt('pos.is("next") ~> Post.on(""))
 
-Here is the new @prevNext@ method we need to add to the @Post@ class:
+これが @Post@ クラスに追加する新しい @prevNext@ メソッドです。
 
 bc. def prevNext = {        
     SQL(
@@ -128,7 +128,7 @@ bc. def prevNext = {
     )
 }
 
-Now, let's add this information to the *show.html* template:
+そして *show.html* テンプレートに、以下の情報を追加しましょう。
 
 bc. def show(id: Long) = {
     Post.byIdWithAuthorAndComments(id).map { post =>
@@ -138,7 +138,7 @@ bc. def show(id: Long) = {
     }
 }
 
-We will call these methods several times during a request so they could be optimized, but they’re good enough for now. Also, add the pagination links at the top of the **show.scala.html** template:
+これらのメソッドをリクエストの間、何回か呼ぶことになりますが、まだ十分ではありません。 **show.scala.html** テンプレートのトップにページングリンクを追加しましょう。
 
 bc. @(
     post:(models.Post,models.User,Seq[models.Comment]),
@@ -168,11 +168,11 @@ bc. @(
     
 }
 
-It’s better now.
+いいですね。
 
-h2. <a>Adding the comment form</a>
+h2. <a>コメントフォームを追加</a>
 
-Now it’s time to set up a comments form. We’ll start by adding the **postComment** action method to the Application controller.
+コメントフォームをセットアップしましょう。 **postComment** アクションをApplicationContorllerに追加します。
 
 bc. def postComment(postId:Long) = {
     val author = params.get("author")
@@ -181,9 +181,9 @@ bc. def postComment(postId:Long) = {
     Action(show(postId))
 }
 
-As you we return an @Action@ value to indicate that we want to redirect to the @show(postId)@ action.
+@Action@ 値を返すようにしたのは、 @show(postId)@ にリダイレクトさせたいということを指し示しています。
 
-Let’s write the HTML form in the **show.html** template (after the **#{display /}** tag in fact):
+**show.html** テンプレートの、**#{display /}** タグの後ろに、HTMLフォームを書きましょう。
 
 bc. <h3>Post a comment</h3>
  
@@ -201,13 +201,13 @@ bc. <h3>Post a comment</h3>
     </p>
 }
 
-You can now try posting a new comment. It should just work.
+さて、新しいコメントをPostしてみましょう。
 
 !images/guide4-1!
 
-h2. <a>Adding validation</a>
+h2. <a>バリデーションを追加</a>
 
-Currently we don’t validate the form content before creating the comment. We would like to make both fields required. We can easily use the Play validation mechanism to ensure that the HTTP parameters are correctly filled in. Modify the **postComment** action to some validation and check that no error occurs:
+現在、コメント登録前にコンテンツのバリデーションをしていません。両方の入力を必須にしたいと思います。Playバリデーション機能を使えば、HTTPパラメータが埋められていることを簡単に確実にすることができます。 **postComment** アクションを編集して、バリデーションを行い、エラーが起きていないことを確認てください。
 
 bc. def postComment(postId:Long) = {
     val author = params.get("author")
@@ -222,9 +222,9 @@ bc. def postComment(postId:Long) = {
     }
 }
 
-p(note). **Don’t forget** to import **play.data.validation._** as well.
+p(note). **play.data.validation._**　をImportするのを **忘れないで** ください。
 
-As you can see, in case of validation errors, we re-display the post detail page. We have to modify the form code to display the error message:
+見て分かるように、バリデーションエラーになった場合、Post詳細ページを再表示しています。エラーメッセージを表示するように修正しましょう。
 
 bc. <h3>Post a comment</h3>
  
@@ -249,7 +249,7 @@ bc. <h3>Post a comment</h3>
     </p>
 }
 
-Note that here we reference @errors@ and @params@. So we need to add them to the template parameters list, and we can even mark them as *implicit*:
+@errors@ と @params@ を参照しています。それをテンプレートパラメータリストに加えて、 *暗黙値* としてマークする必要があります。
 
 bc. @(
     post:(models.Post,models.User,Seq[models.Comment]),
@@ -263,14 +263,14 @@ bc. @(
  
 …
 
-To make the UI feedback more pleasant for the poster, we will add a little JavaScript to automatically set focus on the comment form in case of an error. As this script uses "JQuery Tools Expose":files/jquery.tools.min.js as support libraries, you have to include them. Download these two libraries to the **yabe/public/javascripts/** directory and modify the **main.html** template to include them:
+投稿者に対してもっと分かりやすいフィードバックUIを作るために、エラー時に自動的に入力欄にフォーカスが当たる小さなJavaScriptを追加します。このスクリプトはサポートライブラリとしてJQuery Tools Exposeを使っているので、これをインクルードしておきます。このライブラリをダウンロードして、 **yabe/public/javascripts/** ディレクトリに格納して、 **main.html** テンプレートを以下のインクルード文を含めるように修正してください。
 
 bc. …
 <script src="@asset("public/javascripts/jquery-1.5.2.min.js")"></script>
 <script src="@asset("public/javascripts/jquery.tools.min.js")"></script>
 …
 
-Now you can add this script to the **show.scala.html** template (add it at the end of the page):
+これで以下のスクリプトを、 **show.scala.html** テンプレートに追加できるようになりました。（ページの最後に追加するように御願いします。）
 
 bc. <script type="text/javascript" charset="utf-8">
     $(function() {         
@@ -289,11 +289,11 @@ bc. <script type="text/javascript" charset="utf-8">
 
 !images/guide4-2!
 
-The comment form looks pretty cool now. We will add two more things.
+コメントフォームはとってもかっこ良くなりました。もう２つやりましょう。
 
-First, we will display a success message after a comment is successfully posted. For that, we use the flash scope that allows us to pass messages from one action call to the next one.
+ひとつは、Postが成功した時に、成功メッセージを出す処理を追加します。このためにflash scopeを使います。
 
-Modify the **postComment** action to add a success message:
+**postComment** を編集し、成功メッセージを追加してください。
 
 bc. def postComment(postId:Long) = {
     val author = params.get("author")
@@ -309,7 +309,7 @@ bc. def postComment(postId:Long) = {
     }
 }
 
-and display the success message in **show.html** if present (add it at the top the page):
+**show.html** に表示を追加します。
 
 bc. …
 @if(flash.get("success")) {
@@ -319,11 +319,11 @@ bc. …
 
 !images/guide4-3!
 
-The last thing we will adjust in this form is the URL used for the **postComment** action. As always, it uses the default catch-all route because we didn’t define any specific route. So add this route to the application routes file:
+最後にURLをシンプルにしましょう。ルートファイルに以下定義を追加してください。
 
 bc. POST    /posts/{postId}/comments                Application.postComment
 
-That’s done.
+以上。
 
 p(note). Next: %(next)"Setting up a Captcha":guide5%. 
 

@@ -1,18 +1,18 @@
-h1. Building the first screen
+h1. 初めての画面開発
 
-Now that we have built a first data model, it’s time to start to create the first page of the application. This page will just show the most recent posts, as well as a list of older posts.
+さて、最初のデータモデル作成が完了しているので、アプリケーションの画面開発に入ります。この画面は、古いPostの他だけでなく、最近のPostを表示するだけの画面です。
 
-Here is a mock-up of what we want to achieve:
+こちらは、これから作ろうとしている画面の、モックアップです。
 
 !images/guide3-mock!
 
-h2. <a>Bootstrapping with default data</a>
+h2. <a>デフォルトデータではじめてみる</a>
 
-In fact, before coding the first screen we need one more thing. Working on a web application without test data is not fun. You can’t even test what you’re doing. But because we haven’t developed the contribution screens yet, we can’t populate the blog with posts ourselves. 
+実は、画面の開発を始める前に、もうひとつやらなければならないことがあります。テストデータ無しで動くWebアプリは面白くありません。挙動のテストもできません。しかし画面を開発中のため、自分でデータを登録していくことはできません。
 
-One way to inject default data into the blog is to load a fixture file at application load time. To do that we will create a Bootstrap Job. A Play job is something that executes itself outside of any HTTP request, for example at the application start or at specific interval using a CRON job.
+ブログにデフォルトデータを投入するひとつの方法は、固定ファイルをアプリケーション開始時にロードすることです。まずやらなければいけないことはBootstrapジョブを作ることです。Playジョブは、アプリケーション開始のタイミングや、Cronジョブを使った特定の間隔といった、HTTPリクエストが無いタイミングで何かを実行させるものです。
 
-Let’s create the **/yabe/app/bootsrap.scala** file to define a job that will load a set of default data using **Fixtures**:
+**/yabe/app/bootsrap.scala** ファイルを作り、 **Fixtures** を使ってデフォルトデータをロードするジョブを定義しましょう。
 
 bc. import play.jobs._
     
@@ -38,25 +38,25 @@ bc. import play.jobs._
     
 }
 
-We have annotated this Job with the **@OnApplicationStart** annotation to tell Play that we want to run this job synchronously at application start-up.
+このジョブでは、 **@OnApplicationStart** アノテーションを使って、アプリケーション起動と同期をとって実行したいということをPlayフレームワークに伝えています。
 
-p(note). In fact this job will be run differently in DEV or PROD modes. In DEV mode, Play waits for a first request to start. So this job will be executed synchronously at the first request. That way, if the job fails, you will get the error message in your browser. In PROD mode however, the job will be executed at application start-up (synchrously with the **play run** command) and will prevent the application from starting in case of an error.
+p(note). 実際にはこのジョブはDEVモードとPRODモードで違う挙動をします。DEVモードでは、最初のリクエストが来るまで待ちます。なので、このジョブは初回リクエストと同期をとって稼働することになります。このため、もしジョブが失敗すると、ブラウザにエラーメッセージが表示されます。しかしながらPROVモードの時は、アプリケーション稼働と同期をとって（正確に言うと、 **play run** コマンド実行時に）稼働するので、エラー状態でアプリケーションが稼働することを防ぎます。
 
-You have to create an **initial-data.yml** in the **yabe/conf/** directory. You can of course reuse the **data.yml** content that we just used for tests previously.
+**yabe/conf/** ディレクトリに、 **initial-data.yml** ファイルを作成しなければなりません。もちろん前回使った、 **data.yml** を使うことも可能です。
 
-Now run the application using **play run** and display the page "http://localhost:9000/":http://localhost:9000/ in the browser.
+では、play run コマンドを実行して、ブラウザで　"http://localhost:9000/":http://localhost:9000/ を参照してください。
 
-p(note). You need to restart the application to apply the @BootStrap@ job. You can then connect to the SQL console to check that the database is correctly filled with initial data.
+p(note). @Bootstrap@ ジョブを適用させるために、アプリケーションの再起動が必要です。SQLコンソールにアクセスすることで、初期データが正しくデータベースに投入されているかを確認することができます
 
-h2. <a>The blog home page</a>
+h2. <a>ブログホームページ</a>
 
-This time, we can really start to code the home page.
+いよいよホームページのコーディングを開始します。
 
-Do you remember how the first page is displayed? First the routes file specifies that the **/** URL will invoke the **controllers.Application.index** action method. Then this method returns a **Template** and executes the **/yabe/app/views/Application/index.html** template.
+最初のページがどのように表示されていたか覚えていますか？　まず、 **/** URLが、 **controllers.Application.index** アクションメソッドを呼び出すようにroutesファイルで設定されています。このメソッドは **Template** クラスを応答し、 **/yabe/app/views/Application/index.html** テンプレートを実行します。
 
-We will keep these components but add code to them to load the posts list and display them.
+このコンポーネントを維持したまま、Postデータをリスト表示するコードを追加します。
 
-Open the **/yabe/app/controllers.scala** controller and modify the **index** action to load the posts list, as is:
+**/yabe/app/controllers.scala** コントローラを開き、 **index** アクションPostリストをロードするように編集します。
 
 bc. def index = {
     val allPosts = Post.allWithAuthorAndComments
@@ -66,11 +66,11 @@ bc. def index = {
     )
 }
 
-p(note). Be sure to import @models._@ in the scope of your Application controller.
+p(note). Application controllerクラスに、 @models._@ をインポートするのをお忘れなく。
 
-Can you see how we call the @views.Application.html.index@ template? It will allow us to access them from the template using the name defined by the @Symbol@. In this case, the variables **front** and **older** will be available in the template.
+どのように @views.Application.html.index@ を呼んでいるか分かりますか？ @Symbol@ によって定義された名前を使ってテンプレートからアクセスしているのです。このケースでは、**fron** 変数と **older** 変数がテンプレートで使えるようになります。
 
-Open the **/yabe/app/views/Application/index.scala.html** and modify it to display these objects:
+**/yabe/app/views/Application/index.scala.html** を開き、これらのオブジェクトを表示するように編集してください。
 
 bc. @(
     front:Option[(models.Post,models.User,Seq[models.Comment])], 
@@ -150,17 +150,17 @@ bc. @(
     
 }
 
-You can read about the way this template works in the "Templates chapter":templates. Basically, it allows you to write Scala code in a simple text file. Under the hood, the template is compiled as a standard Scala function.
+テンプレートの働き方については、"Templates chapter":templates で知ることができます。基本的には、シンプルなテキストファイルにScalaコードをかけるようになるというものです。内部的には、テンプレートは標準的なScala関数にコンパイルされています。
 
-OK, now refresh the blog home page.
+では、ブログホームページを再表示してみてください。
 
 !images/guide3-1!
 
-Not pretty but it works!
+今ひとつだけど、動きました！
 
-However you can see we have already started to duplicate code. Because we will display posts in several ways (full, full with comment, teaser) we should create another function that we could call from several templates. As templates are just functions, it is easy to compose them in several ways.
+しかしながら、既にコードが重複し始めていることが分かります。Postをいくつかの方法（全部、コメント付き全部、短い一行）で表示するので、いくつかのテンプレートから呼び出せる別の関数を作る必要があります。テンプレートが単なる関数であったように、いくつかの方法で簡単に組み合わせることができます。
 
-Just create the new **/yabe/app/views/Application/display.scala.html** file:
+**/yabe/app/views/Application/display.scala.html** を作ってください。
 
 bc. @(post:(models.Post,models.User,Seq[models.Comment]), mode: String = "full")
  
@@ -222,7 +222,7 @@ bc. @(post:(models.Post,models.User,Seq[models.Comment]), mode: String = "full")
 }
 
 
-Now using this tag we can rewrite the home page without code duplication:
+このタグを使って、重複なくホームページを書き換えることができます。
 
 bc. @(
     front:Option[(models.Post,models.User,Seq[models.Comment])], 
@@ -258,13 +258,13 @@ bc. @(
     
 }
 
-Reload the page and check that all is fine.
+ページをリロードして、動きを確認してください。
 
-h2. <a>Improving the layout</a>
+h2. <a>レイアウトを改善する</a>
 
-As you can see, the **index.scala.html** template extends **main.scala.html**. Because we want to provide a common layout for all blog pages, with the blog title and authentication links, we need to modify this file.
+見て分かるように、 **index.scala.html** テンプレートは、 **main.scala.html** テンプレートを継承しています。全てのブログページを、ブログタイトルと著者リンクのところを共通レイアウトとしたいので、このファイルを編集する必要があります。
 
-Edit the **/yabe/app/views/main.scala.html** file:
+**/yabe/app/views/main.scala.html** ファイルを編集してください。
 
 bc. @(title:String = "")(body: => Html)
  
@@ -308,28 +308,30 @@ bc. @(title:String = "")(body: => Html)
     </body>
 </html>
 
-Also, add these two keys to the configuration file:
+また、以下ふたつの定義を、設定ファイルに追加してください。
 
 bc. # Blog engine configuration
 # ~~~~~
 blog.title=Yet another blog
 blog.baseline=We won't write about anything
 
-Refresh and check the result. 
+リロードして結果を確認してください。
 
 !images/guide3-2!
 
-h2. <a>Adding some style</a>
+h2. <a>Styleを追加</a>
 
-Now the blog home page is almost done, but it’s not very pretty. We’ll add some style to make it shinier. As you have seen, the main template file main.html includes the **/public/stylesheets/main.css** stylesheet. We’ll keep it but add more style rules to it.
+ブログホームページはほとんどできあがりましたが、あまりかわいくありません。いくつかスタイルを設定して、多少かっこ良くしましょう。これまで見てきたように、mainテンプレートファイルは、 **/public/stylesheets/main.css** スタイルシートをインクルードしています。これを保持しつつ、スタイルルールを加えて行きましょう。
 
-You can "download it here":files/main.css, and copy it to the **/public/stylesheets/main.css** file.
+"スタイルシート":files/main.css をダウンロードして、 **/public/stylesheets/main.css** ファイルにコピーしてください。
 
-Refresh the home page and you should now see a styled page.
+ページを再表示すると、スタイルが設定された画面を確認することができます。
+
+
 
 !images/guide3-3!
 
 <hr>
 
-p(note). Next: %(next)"The comments page":guide4%. 
+p(note). 次は %(next)"コメントの投稿と表示":guide4%. 
 

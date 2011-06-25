@@ -1,148 +1,191 @@
 #logo a {
-    background: url("../images/logo-scala.png") no-repeat scroll 50% 50% transparent;
+    background: url(../images/logo-scala.png) no-repeat 50% 50%;
     width: 161px;
 }
+
 #top {
-    background: -moz-linear-gradient(left bottom , #54D2CF, #605A9E) repeat scroll 0 0 transparent;
+    background: #54D2CF;
+    background: -webkit-gradient(linear, left bottom, right top, from(#54D2CF), to(#605a9e));
+    background: -moz-linear-gradient(left bottom, #54D2CF, #605a9e);
+    background: gradient(linear, left bottom, right top, from(#54D2CF), to(#605a9e));
 }
+
 #menu .selected a:after {
     border-bottom: 0.8em solid #4990B0;
 }
+
 #scalaTop {
     color: #CCF3FF;
-    margin: 0 0 25px !important;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+    text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0px;
+    margin: 0px 0 25px 0 !important;
 }
+
 #scalaTop a {
-    border-bottom: 1px dotted #CCF3FF;
     color: #CCF3FF;
     text-decoration: none;
+    border-bottom: 1px dotted #CCF3FF;
 }
+
 #scalaTop a:hover {
-    border: medium none;
+    border: none;
 }
+
 #scalaTop small {
     font-size: 24px;
 }
+
 .scala #top .category {
-    color: #FFFFFF;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+    color: #fff;
+    text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0px;
 }
+
 .scala #top #note {
-    background: -moz-linear-gradient(left bottom , rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3)) repeat scroll 0 0 transparent;
-    border-radius: 6px 6px 6px 6px;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.6);
-    color: #211B5B;
-    font-size: 12px;
-    margin: 20px 0 0;
+    background: #fff;
+    background: -webkit-gradient(linear, left bottom, right top, from(rgba(255,255,255,.5)), to(rgba(255,255,255,.3)));
+    background: -moz-linear-gradient(left bottom, rgba(255,255,255,.5), rgba(255,255,255,.3));
+    margin: 20px 0 0 0;
     padding: 10px;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-box-shadow: 0 -1px 0 rgba(0,0,0,.3), 0 1px 0 rgba(255,255,255,.6);
+    -moz-box-shadow: 0 -1px 0 rgba(0,0,0,.3), 0 1px 0 rgba(255,255,255,.6);
+    color: #211B5B;
+    text-shadow: rgba(255,255,255,.6) 1px 1px 0px;
+    font-size: 12px;
 }
+
 .scala #top #note code {
-    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 2px 2px 2px 2px;
     font-size: 13px;
-    padding: 1px 6px 2px;
+    background: rgba(255,255,255,.4);
+    padding: 1px 6px 2px 6px;
+    border: 1px solid rgba(255,255,255,.4);
+    border-radius: 2px;
+    -moz-border-radius: 2px;
 }
+
 .scala #top #note strong {
     font-size: 14px;
-    margin-left: 5px;
     position: relative;
-    top: 0;
+    top: 0px;
+    margin-left: 5px;
 }
+
 .scala #top #note a {
     color: #211B5B;
-    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6);
+    text-shadow: rgba(255,255,255,.6) 1px 1px 0px;
 }
+
 .scala .slide {
-    float: left;
-    margin: 10px 35px 0 0;
-    padding: 20px 0 10px;
+    margin: 10px 0 0 0;
+    padding: 20px 0 10px 0;
     width: 430px;
+    float: left;
+    margin-right: 35px;
 }
+
 .scala .slide.right {
     margin-right: 0;
 }
+
 .scala .code {
-    border-left: 3px solid #EEEEEE;
-    color: #222222;
+    white-space: pre;
+    padding-left: 10px;
+    border-left: 3px solid #eee;
+    color: #222;
+    text-shadow: none;
     line-height: 1.5em;
     margin-left: 40px;
-    padding-left: 10px;
-    text-shadow: none;
-    white-space: pre;
 }
+
 .scala .code .shell {
     color: #D83024;
     font-weight: bold;
 }
+
 .scala .code .symbol {
     color: #990095;
 }
+
 .scala .code .string {
     color: #4A9900;
 }
+
 .scala .code .keyword {
     color: #D86101;
 }
+
 .scala .code .type {
     color: #2D8DDD;
 }
+
 .scala .code .func {
-    color: #444444;
+    color: #444;
 }
+
+.scala .code .embedded {
+    background: #ddd;
+    padding: 1px 2px;
+}
+
+.scala .code .embedded .keyword {
+    font-weight: bold;
+}
+
 .scala .explain {
     margin-left: 40px;
 }
+
 .scala .slide h2 {
-    color: #386683;
     font-size: 18px;
-    height: 20px;
+    margin-bottom: 0em;
     line-height: 1.2em;
-    margin-bottom: 0;
+    color: #386683;
+    text-shadow: white 1px 1px 0px;
     position: relative;
-    text-shadow: 1px 1px 0 white;
+    height: 20px;
 }
+
 .scala .slide h2 span {
-    left: 40px;
     position: absolute;
+    left: 40px;
     top: 0;
 }
+
 .scala .slide h2 img {
-    left: 0;
-    opacity: 0.8;
     position: absolute;
     top: -5px;
+    left: 0;
+    opacity: .8;
 }
+
 .scala .explain {
     padding: 1em 0;
 }
+
 .scala .explain p {
     margin-bottom: 1em;
 }
+
 .scala .explain p a {
-    color: #444444;
+    color: #444;
 }
+
 .scala hr {
-    -moz-border-bottom-colors: none;
-    -moz-border-image: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: -moz-use-text-color -moz-use-text-color #CCCCCC;
-    border-style: none none dotted;
-    border-width: medium medium 1px;
-    height: 40px;
     margin: 0 50px;
+    border: none;
+    border-bottom: 1px dotted #ccc;
+    height: 40px;
 }
+
 .scala #docSidebar a {
     color: #4B4893;
 }
+
 .scala .wikistyle p.note {
-    background: none repeat scroll 0 0 #CEF2EF !important;
-    border-left: 6px solid #A5C3C7 !important;
+    background: #CEF2EF !important;
+    border-left: 6px solid #A5C3C7!important;
 }
+
 .scala #footer {
     margin-top: 50px;
     padding-bottom: 20px !important;

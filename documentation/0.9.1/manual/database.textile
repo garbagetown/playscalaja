@@ -1,24 +1,26 @@
-h1. Database access options
+h1. データアクセスのオプション
 
-Most of your applications will need to access to a database. This page describe options you have to manage an SQL database from a Play Scala application.
+アプリケーションのほとんどは、データベースへのアクセスが必要となります。このページでは、Play-Scala アプリケーションから SQL データベースを管理しなければいけないオプションについて記述します。
 
-h2. Using Anorm
 
-The Scala module includes a brand new data access layer called *Anorm* that uses plain SQL to make your database request and provides several API to parse and transform the resulting dataset. 
+h2. Anorm を使う
 
-We believe that it is the best way to access your relational databases from Scala and this component will be encouraged and fully integrated with the rest of the Play Scala stack.
+Scala モジュールは *Anorm* という、まったく新しいデータアクセス層を取り込んでいます。Anorm は、純粋な SQL をデータベースへのアクセスのために使い、取得したデータセットを解析・変換するいくつかの API を提供します。
 
-Please check the "complete manual":anorm for more information.
+Anorm は、Scala からデータベースにアクセスするための最良の方法であり、このコンポーネントが Play-Scala の他の部分と包括的に統合されることができると確信しています。
 
-h2. Integrating other existing Database access librairies
+より詳しくは、 "コンプリートマニュアル":anorm を確認してください。
 
-Perhaps you already use another existing Database access library for Scala and you want to keep using it from your Play application. Basically a Play application manage the JDBC connection for you, and provide your application with a simple @java.sql.Connection@ object that you can use to integrate any other existing framework you want.
+h2. 他のデータベースアクセスライブラリとの統合
 
-For example, here are the few steps need to integrate "ScalaQuery":http://scalaquery.org/ with your Play application.
+恐らく、読者は既に別の Scala 用データアクセスライブラリを使っていて、Play アプリケーションでもそれを使い続けたいと考えているでしょう。基本的に、Play アプリケーションは JDBC コネクションを管理し、既存の他のどのフレームワークとも統合できる、シンプルな @java.sql.Connection@ オブジェクトを提供します。
 
-h3. 1. Add ScalaQuery to your dependencies.yml file
+例えば、 "ScalaQuery":http://scalaquery.org/ を Play アプリケーションに統合するために必要なステップを紹介します。
 
-"ScalaQuery":http://scalaquery.org/download.html is available from the "Scala Tools repository":http://scala-tools.org/repo-releases/org/scalaquery/. So open your application **conf/depenencies.yml** file, and add the following content:
+
+h3. 1. dependencies.yml ファイルに ScalaQuery を追加
+
+"ScalaQuery":http://scalaquery.org/download.html は、"Scala Tools repository":http://scala-tools.org/repo-releases/org/scalaquery/ から利用することができます。 **conf/depenencies.yml** ファイルを開き、以下の記述を追加してください。
 
 bc. # Application dependencies
  
@@ -36,24 +38,24 @@ repositories:
         contains:   
             - org.scalaquery -> *
 
-Now run:
+実行させましょう。
 
 bc. $ play dependencies
 
-To resolve and install the required jars.
+要求された jar を解決し、インストールします。
 
-h3. 2. Configure a Datasource for your application
+h3. 2. アプリケーションにデータソースを設定する。
 
-In the **conf/application.conf** file of your Play application, uncomment this line to enable an in memory database:
+アプリケーションの **conf/application.conf** ファイル内で、インメモリデータベースを有効するためにこの行のコメントを外してください。
 
 bc. # To quickly set up a development database, use either:
 #   - mem : for a transient in memory database (H2 in memory)
 #   - fs  : for a simple file written database (H2 file stored)
 db=mem
 
-h3. 3. Create an SQL evolution Script to initialize your database
+h3. 3. データベースを初期化するために SQL エボリューションスクリプト を作る
 
-Create the **db/evolutions** directory structure in your application if it doesn't already exists, and add a first evolution script **1.sql**:
+まだ無いようでしたら、 **db/evolutions** ディレクトリをアプリケーション内に作って、 **1.sql** という最初のエボリューションスクリプトを追加してください。
 
 bc. # Users schema
  
@@ -73,17 +75,17 @@ INSERT INTO members VALUES (2, 'Sadek', NULL);
  
 DROP TABLE MEMBERS;
 
-This first script will be automatically applied since your database is empty and you run an in-memory database. Check this log:
+この最初のスクリプトは、データベースが空で、且つインメモリデータベースが稼働している時に、自動的に適用されます。ログを確認してください。
 
-bc. …
+bc. ...
 13:31:50,674 INFO  ~ Connected to jdbc:h2:mem:play;MODE=MYSQL
 13:31:50,752 INFO  ~ Application 'myScalaQueryApp' is now started !
 13:31:51,064 INFO  ~ Automatically applying evolutions in in-memory database
-…
+...
 
-h3. Use ScalaQuery in your code
+h3. ソースコード内で ScalaQuery を使う。
 
-Now let's write a simple action method that queries all the **Members** registred in our database:
+さて、データベースに登録された全ての **Members** を問い合わせする、簡単なアクションメソッドを書いてみましょう。
 
 bc. import play.mvc._
  
@@ -129,9 +131,9 @@ package controllers {
  
 }
 
-
-You see that we simply link **ScalaQuery** with the **Play** managed datasource, with this line:
+以下の行で、 **Play** が管理するデータベースに **ScalaQuery** が単純にリンクされたことが分かりますね。 
 
 bc. val db = Database.forDataSource(play.db.DB.datasource)
 
-That's all! You can probably adapt this short tutorial to any other Scala data access library.
+以上です！どの他の Scala データベースアクセスライブラリにも、この短いチュートリアルに記載したやり方が適用できると思いますよ。
+

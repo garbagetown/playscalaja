@@ -1,46 +1,47 @@
-h1. HTTP to Scala data binding
+h1. HTTP から Scala へのデータバインド
 
-Like in Java, you can retrieve HTTP parameters directly from the action method signature. The method parameter’s name must be the same as the HTTP parameter’s. This section explain the difference related to specific Scala types.
+Java版 のように、アクションメソッドから直接 HTTP パラメータを受け取ることができます。メソッドの引数名は、HTTP パラメータと同じにする必要があります。この章では、Scala 型を特定するに関する、Java 版との違いを説明します。
 
-h2. Binding @Option@ types
+h2. @Option@ 型へのバインディング
 
-Sometimes you are not sure that a specific parameter will be present in the HTTP request. In this case, you want probably bind this value to an @Option@ type:
+時として、特定のパラメータが、HTTPリクエストに含まれているかどうか分からない場合があります。この場合、 @Option@ 型に、この値をバインドしてくなるはずです。
 
 bc. def hello(name: Option[String]) = {
     name.map("Hello " + _ + "!").getOrElse("Please give us your name!")
 }
 
-h2. Using Scala default parameter values
+h2. Scala のデフォルトのパラメータ値を使う
 
-Another way to handle the case where an HTTP parameter is missing, is to specify a default value for the method parameter.
+HTTPパラメータが無い時の別の対処方法として、メソッドパラメータのデフォルト値を指定する方法があります。
 
 bc. def hello(name: String = "Guest") = {
     "Hello " + name + "!"
 }
 
-An interesting side effect of this implementation is that the default parameter values are used as well for reverse routing. So for example you can ask Play to redirect to the @Hello@ action without specifying the **name** parameter:
+別の URL に誘導するよりも、デフォルトパラメータを使うこの実装の方が、効果的な場合もあります。例えば、 Play フレームワークに **name** パラメータを特定せずに @Hello@ アクションへのリダイレクトを要求することができる。
 
 bc. def redirectToHello = Action(hello())
 
-h2. Binding case classes
+h2. Case クラスにバインド
 
-You can automatically ask Play to fill a more complex data structure, by specifying a **case class** as method parameter. For example:
+メソッドパラメータとして **case class** を指定することで、より複雑な構造を詰め込んで、Play フレームワークに問い合わせを自動で行うことができます。
+例えば、
 
 bc. case class User(name: String, email: String)
 
-And then, defining an action method:
+と定義した Case クラスを引数にして、以下のようにアクションメソッドを定義します。
 
 bc. def hello(user: User) = user match {
     case User("guillaume", _) => "Howdy, guillaume!"
     case User(name, _) => "Hello " + name
 }
 
-The same convention apply than for binding JavaBean in Java, ie:
+同じ手法は、Java 版では JavaBean へのバインディングに見られます。
 
 bc. /hello?user.name=Guillaume&user.email=gbo@zenexity.com
 
-p(note). Note that Play will automatically generate a default constructor for your case class if you don't define it yourself. However this constructor will be completely empty, and your cass class body will not been executed at object instantiation.
+p(note). Play フレームワークは、定義をしなければ Case クラスのデフォルトコンストラクタを自動的に生成します。しかしながら、このコンストラクタは完全に空で、オブジェクト初期化のタイミングで、Case 本体が実行されることはありません。
 
 <hr>
 
-Next, there is some special features when %(next)"using Scala types in Play templates":templates%
+次は、 %(next)"Play テンプレートで Scala 型を使う":templates% 特に、いくつか特徴があるので、それを紹介します。

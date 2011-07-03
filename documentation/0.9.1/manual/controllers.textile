@@ -289,6 +289,6 @@ bc. object Application extends Controller with Secure {
 
 <hr>
 
- %(next)"Data binding":dataBinding% には小さな違いがあります。
+ %(next)"Data binding":dataBinding% には、Java 版と微妙に違いがあります。
  
  

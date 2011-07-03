@@ -1,26 +1,26 @@
-h1. Scala templates
+h1. Scala テンプレート
 
-Play Scala comes with a new and really poweful Scala based template engine. The design of this new template engine is really inspired by ASP.NET Razor, especially:
+Play フレームワークの Scala モジュールは、 Scala ベースの新しく、本当に強力なテンプレートエンジンを持っています。この新しいテンプレートエンジンの設計は、特に以下のような ASP.NET Razor のコンセプトに影響を受けています。
 
-*Compact, Expressive, and Fluid*: Minimizes the number of characters and keystrokes required in a file, and enables a fast, fluid coding workflow. Unlike most template syntaxes, you do not need to interrupt your coding to explicitly denote server blocks within your HTML. The parser is smart enough to infer this from your code. This enables a really compact and expressive syntax which is clean, fast and fun to type.
+*コンパクトで、表現力豊で、柔軟* ——というコンセプトは、ファイルに入力する文字数を最小限にし、より素早く、より柔軟なコーディングワークフローを実現させるものです。多くのテンプレート文法と違って、HTML 文中にはっきりとサーバ処理ブロックのコーディングを割り込ませる必要はありません。パーサーはとても賢く、推論処理によってサーバサイド処理かどうかを判断します。これによって、とてもコンパクトで、表現力豊かなはっきりとした文法を提供し、コーディングを素早く、かつ楽しいものにしています。
 
-*Easy to Learn*: Enables you to quickly be productive with a minimum of concepts. You use all your existing Scala language and HTML skills.
+*学習コストが低い* ——というコンセプトは、最小限のコンセプトで素早く実開発できる状態に持って行くということを意味しています。使うのは、Scala と、HTML のスキルが全てです。
 
-*Is not a new language*: We consciously chose not to create a new language. Instead we wanted to enable developers to use their existing Scala language skills, and deliver a template markup syntax that enables an awesome HTML construction workflow with your language of choice.
+*新しい言語ではない* —— 我々は新しい言語を作ることにならないように意識しました。その代わりに、我々は開発者に、Scala 言語のスキルが使えるようにしたり、開発者が選択する言語を使ったHTML開発ワークフローを使えるテンプレートのマークアップ文法を提供したりしたかったのです。
 
-*Works with any Text Editor*: Razor doesn’t require a specific tool and enables you to be productive in any plain old text editor.
+*どんなテキストエディタでも開発できる。* —— Razor は特定のツールを要求したりはせず、どんな古い単純なテキストエディタでも開発できるようになっています。
 
-h2. Overview
+h2. 概要
 
-A Play Scala template is a simple text file text file, that contains small blocks of Scala code. It can generate any text-based format (HTML, XML, CSV, etc.). 
+Play フレームワークの Scala テンプレートは、小さな Scala コードのブロックを含む、シンプルなテキストファイルです。どんなテキストベースのフォーマット（HTML や、XML 、CSV など）でも生成することができます。
 
-It’s particularely designed to feel comfortable to those used to working with HTML, allowing Web designers to work with.
+とりわけ、HTMLの開発を快適に行えるように設計されており、Web デザイナーとの恊働が可能となっています、
 
-They are compiled as standard Scala functions, following a simple naming convention: 
+テンプレートは、標準的な Scala 関数としてコンパイルされ、シンプルなネーミング規約に従います。
 
-bq. If you create a *views/Application/index.scala.html* template file, it will generate a @views.Application.html.index@ function.
+bq. もし *views/Application/index.scala.html* というテンプレートファイルを作ったなら、 @views.Application.html.index@ という関数が生成されます。
 
-Here is for example, a classic template content:
+ここに標準的なテンプレートを例示します。
 
 bc. @(customer:models.Customer, orders:Seq[models.Order])
  
@@ -42,58 +42,57 @@ bc. @(customer:models.Customer, orders:Seq[models.Order])
      
 }
 
-
-And you can easily use it from any Scala code:
+そしてこれは、関数としてどの Scala コードからも簡単に使うことができます。
 
 bc. val page:play.template.Html = views.Application.html.index(
     customer, orders
 )
 
-h2. Syntax: the magic '@' character
+h2. 文法: 魔法の文字 '@' 
 
-The Scala template uses *'@'* as single special character. Each time this character is encountered, it indicates the begining of a Scala statement. It does not require you to explicitly close the code-block, and will infer it from your code:
+Scala テンプレートは、 *'@'* を、特別な文字として使います。この文字の出現は、Scala 文が始まることを意味します。コードブロックの終了を明示的に示す必要はなく、コードから推察してくれます。
 
 bc. Hello @customer.name!
-      ^^^^^^^^^^^^^^
-        Scala code
+           ^^^^^^^^^^^
+           Scala code
 
-Because the template engine will automatically detect the end of your code block by analysing your code, it only allow for simple statements. If you want to insert a multi-token statement, just make it more explicit using brackets:
+テンプレートエンジンは、コード分析から自動的に処理の終了を判断するので、シンプルな文しか書くことができません。もし複数の処理を実装したいなら、括弧を使って囲んでください。
 
 bc. Hello @(customer.firstName + customer.lastName)!
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                     Scala Code
 
-You can also use curly bracket, like in plain Scala code, to write a multi-statements block:
+通常の Scala コードのように、中括弧を使うことで複数文を記述することができます。
 
 bc. Hello @{val name = customer.firstName + customer.lastName; name}!
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                              Scala Code
 
-p(note). Because *'@'* is the only special character, if you want to escape it, just use *'@@'*
+p(note). *'@'* は唯一の特殊文字で、もし＠を使いたいなら、 *'@@'* と、エスケープ処理を行ってください。
 
-h2. Template parameters
+h2. テンプレート引数
 
-Because a template is a function, it needs parameters. Template parameters must be declared on the first template line:
+テンプレートは関数なので、引数が必要です。テンプレート引数は、テンプレートの最初の行で宣言されていなければいけません。
 
 bc. @(customer:models.Customer, orders:Seq[models.Order])
 
-You can also use *default values* for parameters:
+また、引数の *デフォルト値* も使うことができます。
 
 bc. @(title:String = "Home")
 
-Or even several parameter groups:
+あるいは、いくつかの引数グループも使うことができます。
 
 bc. @(title:String)(body: => Html)
 
-And even implicit parameters:
+さらに、暗黙引数も使えます。
 
 bc. @(title:String)(body: => Html)(implicit session:play.mvc.Scope.Session)
 
-p(note). Note that all parameter type names must be fully qualified.
+p(note). 全ての引数の型は、省略せずに記述しなければなりません。
 
-h2. Looping
+h2. 繰り返し
 
-You can use the Scala @for comprehension@, is a pretty standard way. Just note that the template compiler will just add a @yield@ keyword before your block:
+Scalaの @for comprehension@ (for 内包表記) というとても標準的な方法を使うことができます。テンプレートのコンパイラーは @yield@ をブロックの前に追加しているだけです。
 
 bc. <ul>
 @for(p <- products) {
@@ -101,7 +100,7 @@ bc. <ul>
 } 
 </ul>
 
-But as you probably know, here the @for comprehension@ is just syntaxic sugar for a classic map:
+しかし、おそらくご存知のように、 @for comprehension@ は古典的な map 処理のシュガーシンタックスです。
 
 bc. <ul>
 @products.map { p =>
@@ -109,9 +108,9 @@ bc. <ul>
 } 
 </ul>
 
-h2. If-Blocks
+h2. If構文
 
-Nothing special here. Just use the @if@ instruction from Scala:
+ここでは特別なことはありません。普通に Scala の @if@ を使ってください。
 
 bc. @if(items.isEmpty) {
     <h1>Nothing to display</h1>
@@ -119,9 +118,9 @@ bc. @if(items.isEmpty) {
     <h1>@items.size items!</h1>
 }
 
-h2. Pattern matching
+h2. パターンマッチング
 
-You can also use pattern matching in templates:
+パターンマッチングもテンプレートの中で使えます。
 
 bc. @connected match {
     
@@ -136,9 +135,9 @@ bc. @connected match {
 }
 
 
-h2. Declaring reusable blocks
+h2. 再利用可能な処理の宣言
 
-You can create reusable code block (or sub template):
+再利用可能なコードブロック（もしくはサブテンプレート）を作ることができます。
 
 bc. @display(product:models.Product) = {
     @product.name ($@product.price)
@@ -150,7 +149,7 @@ bc. @display(product:models.Product) = {
 } 
 </ul>
 
-Note that you can also declare reusable pure Scala blocks:
+再利用可能なピュア Scala ブロックを宣言することもできます。
 
 bc. @title(text:String) = @{
     text.split(' ').map(_.capitalize).mkString(" ")
@@ -158,23 +157,23 @@ bc. @title(text:String) = @{
  
 <h1>@title("hello world")</h1>
 
-h2. Import statements
+h2. Import 文
 
-You can import whatever you want at the begining of your template (or of a sub template):
+テンプレート（もしくはサブテンプレート）の始まりに、インポート処理を実装することができます。
 
 bc. @(customer:models.Customer, orders:Seq[models.Order])
  
 @import utils._
  
-…
+...
 
-h2. Composing templates (tags, layouts, includes, etc.)
+h2. テンプレートの構成 (タグ, レイアウト, インクルード, 等)
 
-Templates being simple functions you can compose them in any way you want. Below are a few examples of other common scenarios:
+テンプレートはシンプルな関数になるので、どんな形にも構成することができます。以下にいくつか、一般的なシナリオを例示します。
 
-h3. Layout
+h3. レイアウト
 
-Let's declare a *views/main.scala.html* template that will act as main layout:
+*views/main.scala.html* テンプレートをメインレイアウトとして振る舞うように宣言してみます。
 
 bc. @(title:String)(content: => Html)
  
@@ -192,9 +191,9 @@ bc. @(title:String)(content: => Html)
     ...
 </div>
 
-As you see this template takes 2 parameters: a title and an HTML block.
+ご覧のように、このテンプレートは２つのパラメータを取得します。タイトルと、HTML です。
 
-Now we can use it from another *views/Application/index.scala.html* template:
+ですので、別の *views/Application/index.scala.html* テンプレートからこれを使うことができます。
 
 bc. @main(title = "Home") {
     
@@ -202,9 +201,9 @@ bc. @main(title = "Home") {
     
 }
 
-h3. Tags
+h3. タグ
 
-Let's write a simple *views/tags/notice.scala.html* tag that display an HTML notice:
+HTML通知を表示する、シンプルな *views/tags/notice.scala.html* タグを書きましょう。
 
 bc. @(level:String = "error")(body: (String) => Html)
  
@@ -230,7 +229,7 @@ bc. @(level:String = "error")(body: (String) => Html)
     
 }
 
-And let's use it from any template:
+そして、テンプレートからこれを使います。
 
 bc. @import views.tags.html._
  
@@ -238,9 +237,9 @@ bc. @import views.tags.html._
     Oops, something is <span style="color:@color">wrong</span>
 }
 
-h3. Includes
+h3. インクルード
 
-Nothing special, you can just call any other templates:
+特別なことはありません、普通に他のテンプレートを呼び出してください。
 
 bc. <h1>Home</h1>
  

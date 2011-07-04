@@ -7,7 +7,7 @@
             <strong>Play Scala</strong> によって <a href="http://www.playframework.org">Play framework の主要な特性</a> を保ったまま <a href="http://www.scala-lang.org">Scala 言語</a> をアプリケーションに使うことができるようになります。 
             Play Scala は、簡潔さと開発者に対する親切さを諦めることなく、Scala の文法的なプログラミングスタイルをより機能的に使います。
             <div id="note">
-                <strong>version 0.9</strong> は 2011 年 3 月 13 日に公開されました。&nbsp;—&nbsp; <code>play install scala-0.9</code> &nbsp;—&nbsp; <a href="/documentation/scala-0.9/roadmap">1.0 までのロードマップを確認してください。</a>
+                <strong>version 0.9.1</strong> は 2011 年 5 月 29 日に公開されました。&nbsp;—&nbsp; <code>play install scala-0.9.1</code> &nbsp;—&nbsp; <a href="/documentation/scala-0.9/roadmap">1.0 までのロードマップを確認してください。</a>
             </div>
         </div>
     </div>
@@ -41,31 +41,31 @@
     </p>
 </div>  
 
-<div class="code"><span class="type">Cache</span>.<span class="func">getAsync</span>(<span class="string">"headlines"</span>, <span class="string">"1h"</span>, <span class="string">"5d"</span>) {
-    <span class="type">WS</span>.<span class="func">url</span>(endpoint).<span class="func">get</span>().<span class="func">focusOnOk</span>().<span class="func">map</span>(
-        _.<span class="func">getXml</span>() \\ <span class="string">"title"</span>
-    )
+<div class="code"><span class="keyword">def</span> <span class="func">show</span>(id: <span class="type">Long</span>) = {
+    <span class="type">Order</span>.<span class="func">findById</span>(id).<span class="func">map</span>( order =>
+        <span class="type">html.index</span>(order, <span class="func">connectedUser</span>)
+    ).<span class="func">getOrElse</span>(<span class="type">NotFound</span>(<span class="string">"No such order"</span>))
 }</div>
         
 </div>
 
 <div class="slide">
         
-<h2><img src="/public/images/icons/cloud-blue.png"> <span>式指向</span></h2>  
+<h2><img src="/public/images/icons/template-blue.png"> <span>Scala テンプレート</span></h2>  
 
 <div class="explain">
     <p>
-        コントローラは値を返す関数です。これはすなわちモジュールの分離性とコードの再利用性を意味します。
+        コードにフォーカスしたテンプレート・アプローチを使うことで HTML の生成に最適化されたタイプセーフな — Scala ベースの <a href="/documentation/0.9.1/templates">テンプレートエンジン</a> です。
     </p>
 </div>  
 
-<div class="code"><span class="keyword">def</span> <span class="func">show</span>(id: <span class="type">Long</span>) = {
-    <span class="type">Order</span>.<span class="func">findById</span>(id).<span class="func">map</span>( o =>
-        <span class="type">Template</span>(
-            <span class="symbol">'order</span> -> o, <span class="symbol">'user</span> -> <span class="func">connectedUser</span>
-        )
-    ).<span class="func">getOrElse</span>(<span class="type">NotFound</span>(<span class="string">"No such order"</span>))
-}</div>
+<div class="code"><span class="type">&lt;h1&gt;</span>Product: <span class="embedded"><span class="keyword">@</span>product.name</span><span class="type">&lt;/h1&gt;</span>
+<br><span class="type">&lt;ul&gt;</span>
+    <span class="embedded"><span class="keyword">@</span>product.versions.map { version =></span>
+        <span class="type">&lt;li&gt;</span>Get <span class="embedded"><span class="keyword">@</span>version.name</span> ($<span class="embedded"><span class="keyword">@</span>version.price</span>)<span class="type">&lt;/li&gt;</span>
+    <span class="embedded">}</span>
+<span class="type">&lt;/ul&gt;</span>
+</div>
     
 </div>
 

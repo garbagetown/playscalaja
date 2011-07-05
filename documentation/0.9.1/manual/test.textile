@@ -1,14 +1,14 @@
-h1. Testing your application
+h1. アプリケーションのテスト
 
-Play Scala comes with "ScalaTest":http://www.scalatest.org/, that natively provide different styles of testing. 
+Play-Scala は、 "ScalaTest":http://www.scalatest.org/ を持っています、これは、根本的に異なるテストスタイルを提供するものです。
 
-As in Play Java, you must place your test dedicated Scala sources into the **test** directory, and run the application using @play test@ to enable the integrated Test runner.
+Scala ソースコードで書かれたテストは、 Play-Java と同じように **test** ディレクトリに格納し、 @play test@ コマンドを実行することで、テスト実行環境をとアプリケーションに統合させることができます。
 
-Please check the complete "ScalaTest reference":http://www.scalatest.org/user_guide for more information.
+詳しくは、 "ScalaTest reference":http://www.scalatest.org/user_guide を参照してください。
 
-h2. JUnit Style
+h2. JUnit 方式
 
-In this style you need to annotate any test method with the ==<code>@Test</code>== annotation.
+この方式だと、どのテストメソッドにも、 ==<code>@Test</code>== アノテーションを付加する必要があります。
 
 bc. class JUnitStyle extends UnitTestCase with AssertionsForJUnit {
     
@@ -23,9 +23,9 @@ bc. class JUnitStyle extends UnitTestCase with AssertionsForJUnit {
     
 }
 
-h2. JUnit Style with Should matchers
+h2. Should 句を使った Junit 方式
 
-The @ShouldMatchers@ trait provides a domain specific language (DSL) for expressing assertions in tests using the word should.
+@ShouldMatchers@ Trait は、should 句を使った、テスト内の成立条件を表現する DSL を提供します。
 
 bc. class JUnitStyleWithShould extends UnitTestCase with ShouldMatchersForJUnit {
     
@@ -45,9 +45,9 @@ bc. class JUnitStyleWithShould extends UnitTestCase with ShouldMatchersForJUnit 
     
 }
 
-h2. Functional suite Style
+h2. 関数一式方式
 
-Here you will create a function for each test.
+このように各テストに、関数を作ります。
 
 bc. class FunctionsSuiteStyle extends UnitFunSuite with ShouldMatchers {
     
@@ -69,9 +69,10 @@ bc. class FunctionsSuiteStyle extends UnitFunSuite with ShouldMatchers {
     
 }
 
-h2. Specification Style
+h2. 仕様書方式
 
-This style provides a “behavior-driven” style of development (BDD), in which tests are combined with text that specifies the behavior the tests verify.
+この方式では、テストが検証する振る舞いを明記したテキストで組み合わせられた、ビヘイビア駆動開発を提供します。
+
 
 bc. class SpecStyle extends UnitFlatSpec with ShouldMatchers {
  
@@ -87,9 +88,9 @@ bc. class SpecStyle extends UnitFlatSpec with ShouldMatchers {
     
 }
 
-h2. Features list Style
+h2. 機能一覧方式
 
-A suite of tests in which each test represents one scenario of a feature.
+機能につき、ひとつのシナリオがそれぞれのテストに記載します。
 
 bc. class FeatureStyle extends UnitFeatureSpec { 
  

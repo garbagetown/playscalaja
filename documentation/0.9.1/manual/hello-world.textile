@@ -1,24 +1,25 @@
-h1. Your first Play Scala application
+h1. Play Scala の始めてのアプリケーション
 
-A very simple tutorial, that will just help you to discover Play Scala with the famous 'Hello World' example.
+本章は、定番の 'Hello World' を例にとって、Play Scala を紹介する簡単なチュートリアルです。
 
-h2. <a>Prerequisites</a>
 
-First of all, make sure that you have a working Play installation, with the Scala module correctly enabled. 
+h2. <a>事前準備</a>
 
-As we will use the command line a lot, it's better to use a Unix-like OS. If you run a Windows system, it will also work fine; you'll just have to type a few commands in the command prompt.
+まず最初に、 Scala モジュールが正しく使える状態で、Play フレームワークがインストールされていることを確認しましょう。
 
-You will of course need a text editor. As in Java, Play Scala manages the compilation and the deployment process itself. 
+コマンドラインを多様することになるので、Unix 系の OS を使う方がいいでしょう。Windows であっても、問題有りません。いくつかのコマンドをコマンドプロンプトで実行するだけです。
 
-h2. <a>Project creation</a>
+もちろんテキストエディタは必要です。Java 版のように、Play-Scala はコンパイルとデプロイのプロセスを自分自身で管理します。
 
-Now that Play is correctly installed, it's time to create the hello world application. Creating a Play application is pretty easy and fully managed by the Play command line utility. That allows for standard project layouts between all Play applications. 
+h2. <a>プロジェクト作成</a>
 
-Open a new command line and type:
+さて、Play は正しくインストールされたので、Hello World アプリケーションを作りましょう。Play アプリケーションを作るのことは、PLay コマンドラインユーティリティによってしっかり管理されているので、とても簡単です。このユーティリティによって、全ての Play アプリケーションでプロジェクトレイアウトが標準化されます。
+
+コマンドラインを新しく開き、以下のように入力してください。
 
 bc. $ play new helloworld --with scala
 
-It will prompt you for the application full name. Type **Hello world**.
+アプリケーションのフルネームを入力します。 **Hello world** と入力してください。
 
 bc. $ play new helloworld --with scala
 ~        _            _ 
@@ -47,49 +48,51 @@ bc. $ play new helloworld --with scala
 
 The **play new** command creates a new directory **helloworld/** and populates it with a series of files and directories, the most important being:
 
-**app/** contains the application’s core. It contains all the application ***.scala files**. You see that the default is a single **controllers.scala** file. You can of course use more files and organize them in several folders for more complex applications. Also the **app/views** directory is where template files live. A template file is generally a simple text, xml or html file with dynamic placeholders.
+**play new** コマンドによって、 **helloworld/** ディレクトリが作成され、以下の最も重要な、一連のファイルとディレクトリが配置されます。
 
-**conf/** contains all the application’s configuration files, especially the main **application.conf** file, the **routes** definition files and the **messages** files used for internationalization.
+**app/** ディレクトリは、アプリケーションのコアが格納されます。アプリケーションの全 ***.scala files** がここに格納されるのです。デフォルトはひとつの **controllers.scala** ファイルです。もちろん、もっと複雑なアプリケーションでは、いくつかのフォルダでより多くのファイルを扱うことができます。また **app/views** ディレクトリにはテンプレートファイルが存在します。テンプレートファイルは通常、単純なテキストファイル、XML ファイル、あるいは動的なプレースホルダーを持つ HTML ファイルになります。
 
-**lib/** contains all optional Scala libraries packaged as standard .jar files.
+**conf/** ディレクトリには、アプリケーションの全ての設定ファイルが入っています。主要なものとしては、メインとなる **application.conf** ファイル、 **routes** 定義ファイル、そして言語国際化に使われる **messages** ファイルになります。
 
-**public/** contains all the publicly available resources, which includes JavaScript, stylesheets and images directories.
+**lib/** には、標準的な .jar ファイルとしてパッケージされた、任意の Scala ライブラリが全て入ります。
 
-**test/** contains all the application tests. Tests are either written either as ScalaTest tests or as Selenium tests.
+**public/** ディレクトリには、公開利用可能なリソースが全て格納されています。JavaScript ファイルや、スタイルシートファイル、画像ファイルが該当します。
 
-p(note). Because **Play uses UTF-8** as single encoding, it's very important that all text files hosted in these directories are encoded using this charset. Make sure to configure your text editor accordingly.
+**test/** ディレクトリには、アプリケーションの全てのテストコードが含まれます。テストコードは ScalaTest 、もしくは Selenium テストとして記述されます。
 
-Now if you're a seasoned Scala developer, you may wonder where all the .class files go. The answer is nowhere: Play doesn't use any class files but reads the Scala source files directly. 
+p(note). **Play フレームワークは UTF-8 によってのみエンコーディングされる** ため、全ての定義ファイルが UTF-8 でエンコーディングされていることが重要になります。適宜、エディタのエンコーディングを設定してください。
 
-That allows two very important things in the development process. The first one is that Play will detect changes you make to any Scala source file and automatically reload them at runtime. The second is that when an error occurs, Play will create better error reports showing you the exact source code.
+さて、熟練の Scala プログラマなら .class ファイルはどこに行くのかと考えるでしょう。答えは「どこにも行かない」です。Play フレームワークは .class ファイルを一切使わず、Scala ソースファイルを直接読み込みます。
 
-h2. <a>Running the application</a>
+これは開発過程において、２つの重要な意味を持ちます。ひとつは、 Scala ソースファイルの変更を検出し、実行中に自動的に再読み込みする、ということです。ふたつめは、 Exception が発生した時に、 Play フレームワークは実際の Scala ソースコードベースでエラーレポートを表示させることができる、ということです。
 
-We can now test the newly-created application. Just return to the command line, go to the newly-created **helloworld/** directory and type **play run**. Play will now load the application and start a Web server on port 9000.
+h2. <a>アプリケーション稼働</a>
 
-You can see the new application by opening a browser to "http://localhost:9000":http://localhost:9000. A new application has a standard welcome page that just tells you that it was successfully created.
+さて、新しく作ったアプリケーションを試してみましょう。 **helloworld/** ディレクトリ内で、 **play run** コマンドを実行するだけで OK です。Playはアプリケーションをロードして、9000番ポートで WEB サーバを起動します。
+
+ブラウザでURLを "http://localhost:9000":http://localhost:9000 と指定することで新しいアプリケーションを確認することができます。新しく作ったアプリケーションは、デフォルトの WELCOME ページを用意していて、これが表示されたことで作成がうまくいったことが分かります。
 
 !images/welcome!
 
-Let’s see how the new application can display this page. 
+この新しいアプリケーションがどのようにこのページを表示しているのか見てみましょう。
 
-The main entry point of your application is the **conf/routes** file. This file defines all of the application’s accessible URLs. If you open the generated routes file you will see this first ‘route’:
+主な入り口は、 **conf/routes** ファイルになります。このファイルでは、全てのアクセス可能なURLを定義します。生成されたroutesファイルを参照すると、最初の「ルート」を確認することができます。
 
 bc. GET		/			Application.index
 
-That simply tells Play that when the web server receives a **GET** request for the **/** path, it must call the **Application.index** Scala method. In this case, **Application.index** is a shortcut for **controllers.Application.index**, because the controllers package is implicit. 
+これは、単純に、 **/** パスに対する **GET** リクエストを受け取ると、 @Application.index@ アクションメソッドを呼び出すということを意味します。このケースでは、 @Application.index@ は、 @controllers.Application.index@ へのショートカットとなります。controllersパッケージは暗黙的に解決されます。
 
-When you create standalone Scala applications you generally create a singleton object with a single entry point defined by a method such as:
+スタンドアローンのScalaアプリを作る際には、以下のように @main@ メソッドによって入り口を定義されたシングルオブジェクトを一般的には使います。
 
-bc. object MyScalaApp {
+bc. object Main {
     def main(args: Array[String]) {
-        ...
+        …
     }
 }
 
-A Play application has several entry points, one for each URL. We call these methods **action** methods. Action methods are defined in several objects that we call **controllers**.
+Playアプリでは、それぞれのURLにくくり付く、いくつかの入り口を持ちます。これを **アクションメソッド** と呼びます。アクションメソッドは、 **コントローラ** という特別なオブジェクトで定義されます。
 
-Let’s see how the **controllers.Application** controller looks like. Open the **helloworld/app/controllers.scala** source file:
+@controllers.Application@ コントローラがどのようなものか見てみましょう。 **helloworld/app/controllers.scala** ソースファイルを開きます。
 
 bc. package controllers
  
@@ -106,16 +109,13 @@ object Application extends Controller {
     
 }
 
+@play.mvc.Controller@ クラスを継承していることに気づくと思います。この index アクションは、このオブジェクトの単なるメソッドとして定義されます。これがアクションメソッドの定義方法です。アクションメソッドは、フレームワークによって、純粋な HTTP レスポンスに暗黙的に変換される値を常に返します。
 
-You see that controller objects extend the **play.mvc.Controller** class. This class provides all useful methods for controllers. Also we have imported the @play.mvc._@ package that contain everything needed to write controllers.
+デフォルトの index アクションはシンプルです。 *views.Application.html.index* を呼び出し、そこから生成される HTML を応答します。テンプレートを使うのは HTTP レスポンスを生成するのに最も一般的な方法になります。（唯一の方法ではありません）
 
-The index action is defined as a simple method of this object. This is how action methods are defined. They always return a value that is interpreted by the framework as the response value.  
+テンプレートは、 **/app/views** に配置された、Scalaソースファイルになります。
 
-The default index action is simple: it invoke the *views.Application.html.index* template and returns the generated HTML. Using a template is the most common way (but not the only one) to generate the HTTP response.
-
-Templates are special Scala source files that live in the **/app/views** directory. 
-
-To see what the template looks like, open the **helloworld/app/views/Application/index.scala.html** file:
+テンプレートファイルを見てみましょう。 **yabe/app/views/Application/index.scala.html** を開きます。
 
 bc. @(title:String)
  
@@ -125,13 +125,13 @@ bc. @(title:String)
     
 }
 
-The template content seems pretty light. In fact, this is because it call other templates to generate the welcome page. 
+テンプレートの中身は実に簡単に見えますね。実際、これは他のテンプレートを呼び出し、Welcomeページを生成しているのです。
 
-The first line defines the template parameters: a template is a function that generates a *play.template.Html* return value. In this case, the template has a single @title@ parameter of type @String@, so the type of this template is @(String) => Html@.
+一行目はテンプレートの引数を定義しています。 *play.template.Html* を生成する関数をテンプレートとしているという定義になります。この場合、テンプレートはString型の @title@ 引数を持っていて、テンプレートの型は、 @(String) => Html@ となります。
 
-Then this template call another template called @main@, that take two parameters: a @String@ and an @Html@ block.
+そして、このテンプレートは ２つの引数（ @String@ と @Html@ ブロック）を要求する、 @main@ という別のテンプレートを呼び出します。
 
-Open the **helloworld/app/views/main.scala.html** file that defines the @main@ template:
+@main@ テンプレートが定義されている、 **helloworld/app/views/main.scala.html** を見てみましょう。
 
 bc. @(title:String = "")(body: => Html)
  
@@ -148,13 +148,13 @@ bc. @(title:String = "")(body: => Html)
   </body>
 </html>
 
-Again, the first line defines the template parameters. And the type of the @main@ template is @(String) (Html) => Html@
+ここでも一行目はテンプレートのパラメータを定義しています。 @main@ テンプレートの型は @(String) (Html) => Html@ になります。
 
-h2. <a>Creating the form</a>
+h2. <a>フォームを作成</a>
 
-We will start the ‘Hello World’ application with a form where you can enter your name.
+名前を入力するフォームを作るところからから ‘Hello World’ アプリケーションの開発を始めましょう。
 
-Edit the **helloworld/app/views/Application/index.scala.html** template:
+**helloworld/app/views/Application/index.scala.html** テンプレートを編集してください。
 
 bc. @main(title = "Home") {
     <form action="@action(controllers.Application.sayHello)" method="GET">
@@ -163,11 +163,11 @@ bc. @main(title = "Home") {
     </form>
 }
 
-p(note). Note that we use GET as form submission method, because the form submission does not have any side effect and is idempotent.
+p(note). フォームのメソッドとして、GET を使っています。これは、フォームのサブミットが何も副次的な挙動を持たず、冪等処理になっているためです。
 
-We use the **@action(…)** helper to ask Play to automatically generate the URL able to invoke the **Application.sayHello** action. 
+**Application.sayHello** アクションを呼び出す URL を Play フレームワークに自動的に生成させるために、 **@action(...)** ヘルパーを使います。
 
-Also, let’s adapt our controller in the **helloworld/app/controllers.scala** file:
+また、コントローラを **helloworld/app/controllers.scala** ファイルに適応させましょう。
 
 bc. package controllers
  
@@ -183,15 +183,15 @@ object Application extends Controller {
     
 }
 
-In the @index@ action, we remove the parameter of the @html.index@ template as our new template doesn't need any parameter anymore. In the @sayHello@ action we retrieve the @myName@ parameter value coming from the form submission, and we pass it to the @html.sayHello@ template.
+@index@ アクションの中で、パラメータを何も必要としない新しいテンプレートとして、@html.index@ テンプレートのパラメータを削除します。 @sayHello@ では、 @myName@ パラメタ値をサブミットされたデータから抜き取り、 @html.sayHello@ テンプレートに引き渡します。
 
-Now try to refresh the page in the browser, and oops, you will get an error:
+さて、ブラウザをリロードしましょう。おっと、エラーになりましたね。
 
 !images/hello-1!
 
-This is the way Play works! It will automatically compile your changes at each page refresh, and show you compilation and execution errors right into your browser.
+これが、 Play フレームワークでの開発スタイルです！ページをリロードする度に変更を自動的にコンパイルし、ブラウザにコンパイルと実行エラー結果を表示します。
 
-The error is pretty clear. We haven't defined the @html.sayHello@ template. Let’s create it in the file **helloworld/app/views/Application/sayHello.scala.html**:
+エラーはとても分かりやすいですね。まだ @html.sayHello@ テンプレートを定義していないために起こっているエラーです。 **helloworld/app/views/Application/sayHello.scala.html** ファイルに作りましょう。
 
 bc. @(name:String)
  
@@ -203,31 +203,31 @@ bc. @(name:String)
     
 }
 
-You can refresh the page.
+リロードしてください。
 
 !images/guide1-page2!
 
-Look how we have used the **?:** operator in the template. It switches to a default value if the **name** value is empty. So if you try to submit the form without entering any name, it will display ‘Hello guest’.
+テンプレートで **?:** 演算子をどう使うか見てみましょう。この演算子によって **name** 値が空だった場合に、デフォルトの値をセットします。よって、名前を入力せずにフォームをサブミットしようとすると、‘Hello guest’ と表示されます。
 
-h2. <a>Providing a better URL</a>
+h2. <a>URL を良くする</a>
 
-Well, if you look at the submission URL, you will see something like:
+さて、サブミットされた URL を見てみると、こんな風になっています。
 
 bc. http://localhost:9000/application/sayhello?myName=guillaume
 
-It is not very pretty. This is because Play used the default ‘catch all’ route.
+あまりよろしく無いですね。これは、Play フレームワークが、デフォルトの ‘catch all’ ルートを使っているからです。
 
 bc. *       /{controller}/{action}                  {controller}.{action}
 
-We can have a better URL by specifying a custom path for the **Application.sayHello** action. Edit the **helloworld/conf/routes** file and add this route after the first one:
+ **Application.sayHello** アクションに対して、カスタマイズされたパスを特定してあげることで、もっといい URL にすることができます。 **helloworld/conf/routes** ファイルを編集し、最初のルートの後ろに以下を追記してください。
 
 bc. GET     /hello                                  Application.sayHello
 
-Now go back to the form and submit it again to check that it uses the new URL pattern.
+では、フォームに戻り、サブミットしなおしてください。URL が新しくなっていることが確認できます。
 
-h2. <a>Customizing the layout</a>
+h2. <a>レイアウトをカスタマイズする</a>
 
-As both templates that the application use so far inherit from the same **main.html** template, you can easily add a custom layout. Edit the **helloworld/app/views/main.html** file:
+アプリケーションが使っているどのテンプレートが同じ **main.html** テンプレートを継承している限り、カスタマイズされたレイアウトを簡単に追加することができます。 **helloworld/app/views/main.html** ファイルを編集してください。
 
 bc. ...
 <body>
@@ -237,15 +237,15 @@ bc. ...
 </body>
 ...
 
-Now we have a common header for both pages.
+どのページにも共通ヘッダーを付けました。
 
 !images/guide1-page3!
 
-h2. <a>Adding validation</a>
+h2. <a>バリデーションを追加</a>
 
-We will add a little validation to the form, to make the name field required. We can use the Play validation framework to do that.
+フォームにちょっとしたバリデーションを追加しましょう。名前の入力を必須にします。Play フレームワークのバリデーション機能を使うことができます。
 
-Edit the **helloworld/app/controllers.scala** file, and the **sayHello** action:
+ **helloworld/app/controllers.scala** ファイルの **sayHello** アクションを編集してください。
 
 bc. ...
 def sayHello = {
@@ -259,13 +259,13 @@ def sayHello = {
 }
 ...
 
-Now our **sayHello** can return 2 distincts values. A @Html@ value in the case of there is a name provided by the form, or an @Action@ value if there is an error. An @Action@ value is used to redirect to another existing action method. Here we specify that we want to redirect to the @index@ action.
+ここで **sayHello** アクションは２つの値を返すことができます。フォームから送られてきた名前が存在する場合には @Html@ 値、エラーが有る場合には @Action@ 値を返します。 @Action@ 値は、他のアクションメソッドにリダイレクトするために使われています。ここでは @index@ アクションへリダイレクトするよう指定されています。
 
-Play will automatically check that the myName field is filled or will add an error object to the **errors** scope. Then if there is any error, we add a message to the **flash** scope and redirect to the **index** action.
+Play フレームワークは、myName フィールドが埋まっているかを自動的にチェックし、 **errors** スコープへエラーオブジェクトを追加します。もし何かエラーがあれば、 **flash** スコープにメッセージを追加し、 **index** アクションへリダイレクトします。
 
-The flash scope allows to keep messages during action redirection.
+リダイレクトされている間、flash スコープにはメッセージが表示されています。
 
-Now you just have to display the **error** message if any. Edit the **helloworld/app/views/Application/index.html**:
+さて、とにかく **error** メッセージを表示させなければなりません。 **helloworld/app/views/Application/index.html** を編集してください。
 
 bc. @()(implicit flash:play.mvc.Scope.Flash)
  
@@ -282,29 +282,29 @@ bc. @()(implicit flash:play.mvc.Scope.Flash)
     </form>
 }
 
-And check that it works:
+動きを確認しましょう。
 
 !images/guide1-page4!
 
-See how we take implicitely the flash parameter from the controller scope.
+controller スコープから、どう flash パラメタが暗黙的に取得しているか確認してください。
 
-h2. <a>Writing an automated test suite</a>
+h2. <a>自動テストを書きましょう。</a>
 
-We will finish by writing a test for the application. As there is no Java logic to test, we need to test the Web application itself. So we will write a Selenium test.
+アプリケーションのテストを書けばあとは終わりです。テストのための Java ロジックは無いので、Web アプリケーションそのものをテストしなければなりません。ですので、 Selenium テストを書きます。
 
-First, you need to run your application in **test mode**. Stop the application and restart it with the **test** command:
+最初に、アプリケーションを **test mode** で稼働させる必要があります。アプリケーションをストップさせ、 **test** コマンドで再起動してください。
 
 bc. $ play test
 
-The **play test** command is almost the same as **play run**, except that it loads a test runner module that allows to run test suite directly from a browser. 
+**play test** コマンドは、ほとんど **play run** と一緒です。違うのは、ブラウザから直接テストを実行できるテストランナーモジュールをロードするところです。
 
-Open a browser to the "http://localhost:9000/@tests":http://localhost:9000/@tests URL to see the test runner. Try to select all the default tests and run them; all should be green… But these default tests don’t really test anything.
+ブラウザを開き、 "http://localhost:9000/@tests":http://localhost:9000/@tests にアクセスし、テストランナーを確認してください。デフォルトのテストを全部選択して、稼働させてください。オールグリーンとなるはずです。しかし、デフォルトのテストは、本当に何もしていません。
 
 !images/guide1-test!
 
-A selenium test suite is typically written as an HTML file. The HTML syntax required by selenium is a little tedious (formatted using an HTML table element) to write. The good news is that Play will help you to generate it using the Play template engine and a set of tags that support a simplified syntax for selenium scenarios. 
+selenium テストは、一般的には HTML ファイルとして書かれます。selenium に求められる HTML シンタックスはちょっとめんどくさいです（ table タグを使うフォーマットになっています ）。しかし素晴らしいことに Play フレームワークは Play テンプレートエンジンと、selenium　シナリオのための単純化したシンタックスをサポートするタグセットを使い、selenium の HTML を生成してくれます。
 
-The default test suite of a newly created Play application already contains a selenium test. Open the **helloworld/test/Application.test.html** file:
+新しく作成された Play アプリケーションのデフォルトテストには、既に selenium テストが含まれています。 **helloworld/test/Application.test.html** ファイルを開いてください。
 
 bc. *{ You can use plain selenium command using the selenium tag }*
  
@@ -314,9 +314,9 @@ bc. *{ You can use plain selenium command using the selenium tag }*
     assertNotTitle('Application error')
 #{/selenium}
 
-This test should run without any problem with the application for now. It just open the home page and check that the page content does not contain the ‘Application error’ text.
+このテストは、今は何も問題なく動きます。ホームページを開き、ページコンテンツに ‘Application error’ というテキストが含まれていないことを確認しているだけです。
 
-Let’s write a test for our application. Edit the test content:
+テストを書いてみましょう。テストコンテンツを編集します。
 
 bc. #{selenium}
     // Open the home page, and check that no error occurred
@@ -347,13 +347,11 @@ bc. #{selenium}
     assertTextNotPresent('Hello bob!')
 #{/selenium}
 
-We have fully tested the application. Just select this test in the test runner and click ‘Start’. Everything should be green!
+アプリケーションのテストが完了しました。 ‘Start’ をクリックし、テストランナーの中のテストを選択してください。オールグリーンです！
 
 !images/guide1-test2!
 
 
-h2. <a>Learn more</a>
+h2. <a>より詳しく</a>
 
-This was a very simple tutorial about a very dumb application. 
-
-If you want to learn more about Scala, you can use our interactive  %(next)"Play with Scala":learnscala% application. 
+これはごく簡単なアプリケーションの単純なチュートリアルでした。より詳しく知りたい場合は、 %(next)"Play with Scala":learnscala% を参照してください。

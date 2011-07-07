@@ -1,16 +1,16 @@
-h1. Installation guide
+h1. インストールガイド
 
-h2. Prerequisites
+h2. 事前準備
 
-Before installing the Play Scala module, be sure to have a working installation of Play framework. Play Scala require *Play 1.2.2*.
+Play Scala モジュールをインストールする前に、Play フレームワークのインストールができているか確認する必要があります。 *Play 1.2.2* が必要です。
 
-p(note). You don't need to already have Scala installed on your computer. The Play Scala module comes with all required libraries and with the Scala compiler. 
+p(note). PC に Scala がインストールされている必要はありません。 Play Scala モジュールは、必要なライブラリや Scala コンパイラと一緒にインストールされます。
  
-The included Scala version is **2.8.1**.
+ついてくるScalaのバージョンは、 **2.8.1** です。
 
-h2. Installing the Scala module locally
+h2. Scala モジュールをインストール
 
-The simpler way to work with Play and Scala is to download and install the Scala module locally. You can use the @play install scala@ command to do that:
+Scala モジュールをローカルにダウンロードしてインストールすることは、Play と Scala を使って簡単にできます。 @play install scala@ コマンドを使って使います。
 
 bc. $ play install scala
 ~        _            _ 
@@ -32,11 +32,11 @@ bc. $ play install scala
 ~
 ~ Module scala-0.9.1 is installed!
 
-h2. Creating a new Scala application
+h2. 新しい Scala アプリケーションを作る
 
-Now that you have the Scala module locally installed, you can ask Play to create a new application with the Scala module enabled. Use the @play new --with scala@ command for that.
+Scala モジュールがローカルにインストールされたので、Scala モジュールを使って新しいアプリケーションを作ることができます。 @play new --with scala@ コマンドをつかってください。
 
-p(note). The **--with** option of the **play new** command allow to automatically configure a set of locally installed module during application creation.
+p(note). **play new** コマンドの **--with** オプションは、アプリケーションが作成に伴ってインストールされたモジュールセットを自動的に設定してくれます。
 
 bc. $ play new myScalaApp --with scala
 ~        _            _ 
@@ -63,7 +63,7 @@ bc. $ play new myScalaApp --with scala
 ~ Have fun!
 ~
 
-As you see, the **conf/dependencies.yml** dependencies configuration file is automatically configured with the Scala dependency:
+ご覧のように、 **conf/dependencies.yml** 依存設定ファイルに、Scala への依存性が自動的に設定されています。
 
 bc. # Application dependencies
  
@@ -73,7 +73,7 @@ require:
 
 h2. Starting a Scala application
 
-Like for any other Play application, you simply start your newly created application by typing @play run@:
+他の Play アプリケーションのように、 @play run@ とすることによって、新しく作られたアプリケーションを簡単に稼働させることができます。
 
 bc. $ play run myScalaApp
 ~        _            _ 
@@ -93,6 +93,7 @@ Listening for transport dt_socket at address: 8000
 21:26:16,170 INFO  ~ Listening for HTTP on port 9000 ...
 21:26:29,177 INFO  ~ Application 'myScalaApp' is now started !
 
-Now that you have successfully enabled Scala support for your Play installation you can start by creating %(next)"your first application":hello-world%.
+さてこれで、 %(next)"はじめてのアプリケーション":hello-world% を作り始めることができるようになりました。
 
-Have fun!
+大いに楽しんでくださいね！
+

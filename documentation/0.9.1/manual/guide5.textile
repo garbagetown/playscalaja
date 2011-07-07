@@ -1,46 +1,46 @@
-h1. Setting up a captcha
+h1. CAPTCHAのセットアップ
 
-Because anyone can post a comment to our blog engine, we should protect it a little to avoid automated spam. A simple way to protect a form from this is to add a "captcha":http://en.wikipedia.org/wiki/Captcha image.
+このブログエンジンには誰でもコメントを投稿できてしまうので、自動スパムを回避するためのちょっとした防衛策をとる必要があります。それには、 "キャプチャ":http://ja.wikipedia.org/wiki/CAPTCHA 画像を使うのが簡単です。
 
-h2. <a>Generating the captcha image</a>
+h2. <a>CAPTHCA 画像の生成</a>
 
-We’ll start to see how we can easily generate a captcha image using Play. Basically we will just use another action, except that it will return a binary stream instead of the HTML responses like we’ve returned so far.
+これから、Play を使うと キャプチャ 画像の生成が簡単にできることを確認していきます。基本的には別のアクションを使うというだけで、これまでと違うのは HTML レスポンスの代わりに、バイナリストリームを応答するところです。
 
-Since Play is a **full-stack** web framework, we try to include built-in constructs for web applications’ most typical needs; generating a captcha is one of them. We can use the **play.libs.Images** utility to simply generate a captcha image, and then write it to the HTTP response. 
+Play フレームワークは **フルスタック** な WEB フレームワークのため、WEB アプリケーションの典型的なニーズ　〜　キャプチャ 画像生成はそのうちのひとつですが　〜に対してあらかじめ組み込まれた仕掛けを使ってみることにします。キャプチャ 画像を簡単に生成するために **play.libs.Images** ユーティリティを使い、HTML レスポンスに出力してみましょう。
 
-As usual, we will start with a simple implementation. Add the **captcha** action to the **Application** controller:
+いつも通り、簡単な実装から始めてみます。 **Application** コントローラに **captcha** アクションを追加してください。
 
 bc. def captcha = Images.captcha
 
-Note that we can retuen the captcha object directly because the Images.Captcha class implements @java.io.InputStream@. 
+Images.Captcha クラスは、 @java.io.InputStream@ を実装しているので、キャプチャ オブジェクトを直接返すことができます。
 
-p(note). **Don’t forget** to import **play.libs._**.
+p(note). **play.libs._** をインポートすることを、 **忘れないでください。**
 
-Now add a new route to the **/yabe/conf/routes** file:
+さて、新しいルートを、 **/yabe/conf/routes** ファイルに追加してください。
 
 bc. GET     /captcha                                Application.captcha
 
-And try the **captcha** action by opening "http://localhost:9000/captcha":http://localhost:9000/captcha.
+"http://localhost:9000/captcha":http://localhost:9000/captcha を開いて、 **captcha** アクションを試してみてください。
 
 !images/guide5-1!
 
-It should generate a random text for each refresh.
+リロードする度に、文字列がランダムに生成されます。
 
-h2. <a>How do we manage the state?</a>
+h2. <a>ステートをどう管理しましょう</a>
 
-Until now it was easy, but the most complicated part is coming. To validate the captcha we need to save the random text written to the captcha image somewhere and then check it at the form submission time. 
+ここまでは簡単ですが、最も複雑なのはここです。キャプチャ画像を検証するために、キャプチャ画像にランダムに書かれたて文字列をどこかに保存し、Form サブミット時にチェックする必要があります。
 
-Of course we could just put the text to the user session at the image generation time and then retrieve it later. But this solution has two drawbacks:
+もちろん、画像生成時に文字列をユーザセッションに格納して、あとでそれを抜き出すことはできます。しかしこれにはふたつの問題点があります。
 
-**First**, the Play session is stored as a cookie. It solves a lot of problems in terms of architecture but has a lot of implications. Data written to the session cookie are signed (so the user can’t modify them) but not encrypted. If we write the captcha code to the session anybody could easily resolve it by reading the session cookie.
+**第一に** Play フレームワークのセッションはクッキーに保存されるということです。これは、アーキテクチャの観点から様々な問題を解決しますが、同時にいろいろな影響を引き起こします。データが書かれるセッションクッキーは、署名されています（ユーザが編集することができない）が、暗号化はされていません。もしキャプチャコードをセッションに書き込んでしまうと、セッションクッキーを読み取ることで簡単にコードを盗まれてしまいます。
 
-**Second**, remember that Play is a **stateless** framework. We want to manage things in a purely stateless way. Typically, what happens if a user simultaneously opens two different blog pages with two different captcha images? We have to track the captcha code for each form.
+**第二に** Play フレームワークは **ステートレス** なフレームワークであることを覚えているでしょうか。純粋にステートレスな方法で、情報を管理したいのです。分かりやすい例でいうと、ふたつの違うキャプチャ画像が、同時に２つの違うブログページで開かれた時、何が起こるでしょうか？　それぞれのフォームからのキャプチャコードを追随しておかないといけないのです。
 
-So to resolve the problem we need two things. We will store the captcha secret key on the server side. Because it is transient data we can easily use the Play **Cache**. Moreover because cached data have a limited life time it will add one more security mechanism (let’s say that a captcha code will be available for only 10mn). Then to resolve the code later we need to generate a **unique ID**. This unique ID will be added to each form as a hidden field and implicitly references a generated captcha code.
+このように、我々は２つの問題を解決しなければなりません。キャプチャの秘密鍵はサーバサイドに格納しておくことになります。それは一時的なデータとなるので、簡単に Play フレームワークの **キャッシュ** を使います。さらに、キャッシュされたデータは限られた時間だけ存続するものなので、もうひとつセキュリテリ機能を追加します。（キャプチャコードは１０分間だけ有効、ということにしましょう）そして、後からコードを解決するために、 **ユニークID** を生成する必要があります。ユニークIDは、各フォームに hidden フィールドとして、そして生成されたキャプチャコードへの暗黙的な参照として追加されます。
 
-This way we elegantly solve our state problem.
+この方法は、ステート問題を鮮やかに解決します。
 
-Modify the **captcha** action as is:
+**captcha** アクションを以下のように編集してください。
 
 bc. def captcha(id:String) = {
     val captcha = Images.captcha
@@ -49,15 +49,15 @@ bc. def captcha(id:String) = {
     captcha
 }
 
-Note that the **getText(…)** method takes any color as parameter. It will use this color to draw the text.
+Note  **getText(...)** メソッドはパラメータとしてどんな色でもとれます。この色を使って、テキストが描画されます。
 
-p(note). **Don’t forget** to import **play.cache._**.
+p(note). **play.cache._** をインポートするのを **忘れないでください**
 
-h2. <a>Adding the captcha image to the comment form</a>
+h2. <a>コメントフォームにキャプチャ画像を追加</a>
 
-Now, before displaying a comment form we will generate a unique ID. Then we will modify the HTML form to integrate a captcha image using this ID, and add the ID to another hidden field.
+さて、コメントフォームを表示する前に、ユニークIDを生成させます。そして、この ID を使ってキャプチャ画像を HTML フォームに統合させるように編集し、他の hidden フィールドに ID を追加します。
 
-Let’s rewrite the **Application.show** action:
+**Application.show** アクションを以下のように書き直してください。
 
 bc. def show(id: Long) = {
     Post.byIdWithAuthorAndComments(id).map { post =>
@@ -67,7 +67,7 @@ bc. def show(id: Long) = {
     }
 }
 
-And now the form in the **/yable/app/views/Application/show.scala.html** template:
+そして **/yable/app/views/Application/show.scala.html** テンプレート内のフォームです。
 
 bc. ...
 <p>
@@ -90,15 +90,15 @@ bc. ...
 </p>
 ...
 
-Good start. The comment form now has a captcha image.
+いい感じです。これでコメントフォームにキャプチャ画像が入りました。
 
 !images/guide5-2!
 
-h2. <a>Validating the captcha</a>
+h2. <a>キャプチャを検証</a>
 
-Now we just have to validate the captcha. We have added the **randomID** as a hidden field, right? So we can retrieve it in the **postComment** action, then retrieve the actual code from Cache and finally compare it to the submitted code.
+さて、とにかくキャプチャを検証しなければなりません。hidden フィールドとして、**ランダムID** を追加しましたよね？ですので、 **postComment** アクションの中でそれを受け取ることができます。そして、キャッシュから抜き取ったコードと、サブミットされたコードを最終的に比較してください。
 
-Not that difficult. Let’s modify the **postComment** action.
+難しい話ではありません。 **postComment** を編集してください。
 
 bc. def postComment(postId:Long) = {
     val author = params.get("author")
@@ -123,7 +123,7 @@ bc. def postComment(postId:Long) = {
     }
 }
 
-Because we now have more error messages, modify the way we display errors in the **show.scala.html** template (yes we will just display the first error, it’s good enough):
+またエラーメッセージが増えたので、エラーメッセージのヒョジの仕方を **show.scala.html** で編集しましょう。（そうです。単純に最初のエラーだけ表示させてますが、それで十分です）
 
 bc. .. 
 @if(errors) {
@@ -133,14 +133,14 @@ bc. ..
 }
 ...
 
-p(note). Typically for more complex forms, error messages are not managed this way but externalized in the **messages** file and each error is printed inside the corresponding field.
+p(note). 通常、もっと複雑なフォームでは、エラーメッセージをこのように管理したりはせず、 **messages** ファイルに外部定義化し、該当のフィールドにそれぞれのエラーが印字されるようにします。
 
-Check that the captcha is now fully functional.
+実装し終わったキャプチャを確認してみましょう。
 
 !images/guide5-3!
 
-Great!
+すばらしい！
 
 <hr>
 
-p(note). (to be continued)
+p(note). (つづく)

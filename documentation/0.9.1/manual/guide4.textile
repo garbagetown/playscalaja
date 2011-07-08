@@ -1,10 +1,10 @@
 h1. コメントの投稿と表示
 
-ブログのホームページは出来上がっているので、続いてPost詳細ページをコーディングします。このページは今のPostに対する全てのコメントを表示し、新しいコメントを投稿するフィールドを含めます。
+ブログのホームページは出来上がっているので、続いて Post 詳細ページをコーディングします。このページは今の Post に対する全てのコメントを表示し、新しいコメントを投稿するフィールドを含めます。
 
-h2. <a>showアクション作成</a>
+h2. <a>show アクション作成</a>
 
-Post詳細ページを表示するために、 **Application** コントローラーに新しいActionが必要です。 **show** アクションとしてこれを作りましょう。
+Post 詳細ページを表示するために、 **Application** コントローラーに新しい Action が必要です。 **show** アクションとしてこれを作りましょう。
 
 bc. def show(id: Long) = {
     Post.byIdWithAuthorAndComments(id).map {
@@ -14,9 +14,9 @@ bc. def show(id: Long) = {
     }
 }
 
-このようにshowアクションはとてもシンプルです。 **Long** 型のScala値としてHTTPの **id** パラメータを自動的に受け取るメソッドパラメータを **id** として宣言しています。このパラメータは、クエリストリングか、URLパスか、リクエスト電文のBody部かのいずれかから引き抜かれます。
+このように show アクションはとてもシンプルです。 **Long** 型の Scala 値として HTTP の **id** パラメータを自動的に受け取るメソッドパラメータを **id** として宣言しています。このパラメータは、クエリストリングか、URL パスか、リクエスト電文の Body 部かのいずれかから引き抜かれます。
 
-p(note). もし送信したHTTPパラメータの **id** が、数値型でなければ、errorsコンテナにバリデーションエラーを自動的に加えます。
+p(note). もし送信した HTTP パラメータの **id** が、数値型でなければ、errors コンテナにバリデーションエラーを自動的に加えます。
 
 このアクションは **/yabe/app/views/Application/show.scala.html** テンプレートを表示します。
 
@@ -32,7 +32,7 @@ bc. @(post:(models.Post,models.User,Seq[models.Comment]))
 
 h2. <a>詳細ページにリンクを追加</a>
 
-displayタグの中では、全てのリンクは **＃** を使って空にしてあります。 **Application.show**アクションにリンクポイントを設定しましょう。Playフレームワークでは、テンプレートの中で **actionヘルパー** を使うことで簡単にリンクを構築することができます。
+display タグの中では、全てのリンクは **＃** を使って空にしてあります。 **Application.show** アクションにリンクポイントを設定しましょう。Play フレームワークでは、テンプレートの中で **actionヘルパー** を使うことで簡単にリンクを構築することができます。
 
 **/yabe/app/views/tags/display.scala.html** のタグを編集してみましょう。
 
@@ -44,7 +44,7 @@ bc. ...
 </h2>
 ...
 
-ホームページをリロードし、Postタイトルをクリックし、Postページを表示してください。
+ホームページをリロードし、Post タイトルをクリックし、Post ページを表示してください。
 
 !images/guide4-0!
 
@@ -62,15 +62,15 @@ bc. ...
 </div>
 ... 
 
-これでホームページとPost詳細ページの間をナビゲートすることができるようになりました。
+これでホームページと Post 詳細ページの間をナビゲートすることができるようになりました。
 
 h2. <a>URLをもう少しよくしましょう。</a>
 
-見て分かるように、Post詳細ページのURLは以下のような具合です。
+見て分かるように、Post 詳細ページの URL は以下のような具合です。
 
 bc. /application/show?id=1
 
-Playフレームワークはデフォルトの、「catch all」ルートを使っているからです。
+Play フレームワークはデフォルトの、「 catch all 」ルートを使っているからです。
 
 bc. *       /{controller}/{action}                  {controller}.{action}
 
@@ -78,15 +78,15 @@ bc. *       /{controller}/{action}                  {controller}.{action}
 
 bc. GET     /posts/{id}                             Application.show
 
-p(note). この方法では、URLパスから **id** が取得されます。
+p(note). この方法では、URL パスから **id** が取得されます。
 
 ブラウザを再読み込みして、挙動を確認してください。
 
 h2. <a>ページングを追加</a>
 
-Postを簡単にナビゲーションするために、ページングの仕掛けを追加しましょう。Postクラスを拡張して、前と次をくくり付けられるようにします。
+Post を簡単にナビゲーションするために、ページングの仕掛けを追加しましょう。Post クラスを拡張して、前と次をくくり付けられるようにします。
 
-ここにあるSQLクエリは、特定のエレメントから前と次のPostを括り付けるために使うものです。
+ここにあるSQLクエリは、特定のエレメントから前と次の Post を括り付けるために使うものです。
 
 bc. (
     select *, 'next' as pos from post 
@@ -100,7 +100,7 @@ bc. (
  
 order by postedAt desc
 
-そしてクエリ結果を @(Option[Post], Option[Post])@ の値に変換させます。このふたつのうち、一つ目が前の要素がPostで、二つ目の要素が次のPostに該当します。
+そしてクエリ結果を @(Option[Post], Option[Post])@ の値に変換させます。このふたつのうち、一つ目が前の要素が Post で、二つ目の要素が次の Post に該当します。
 
 bc. opt('pos.is("prev") ~> Post.on("")) ~ opt('pos.is("next") ~> Post.on(""))
 
@@ -172,7 +172,7 @@ bc. @(
 
 h2. <a>コメントフォームを追加</a>
 
-コメントフォームをセットアップしましょう。 **postComment** アクションをApplicationContorllerに追加します。
+コメントフォームをセットアップしましょう。 **postComment** アクションを ApplicationContorller に追加します。
 
 bc. def postComment(postId:Long) = {
     val author = params.get("author")
@@ -207,7 +207,7 @@ bc. <h3>Post a comment</h3>
 
 h2. <a>バリデーションを追加</a>
 
-現在、コメント登録前にコンテンツのバリデーションをしていません。両方の入力を必須にしたいと思います。Playバリデーション機能を使えば、HTTPパラメータが埋められていることを簡単に確実にすることができます。 **postComment** アクションを編集して、バリデーションを行い、エラーが起きていないことを確認てください。
+現在、コメント登録前にコンテンツのバリデーションをしていません。両方の入力を必須にしたいと思います。 Play バリデーション機能を使えば、 HTTP パラメータが埋められていることを簡単に確実にすることができます。 **postComment** アクションを編集して、バリデーションを行い、エラーが起きていないことを確認てください。
 
 bc. def postComment(postId:Long) = {
     val author = params.get("author")
@@ -222,9 +222,9 @@ bc. def postComment(postId:Long) = {
     }
 }
 
-p(note). **play.data.validation._**　をImportするのを **忘れないで** ください。
+p(note). **play.data.validation._**　を Import するのを **忘れないで** ください。
 
-見て分かるように、バリデーションエラーになった場合、Post詳細ページを再表示しています。エラーメッセージを表示するように修正しましょう。
+見て分かるように、バリデーションエラーになった場合、 Post 詳細ページを再表示しています。エラーメッセージを表示するように修正しましょう。
 
 bc. <h3>Post a comment</h3>
  
@@ -263,7 +263,7 @@ bc. @(
  
 …
 
-投稿者に対してもっと分かりやすいフィードバックUIを作るために、エラー時に自動的に入力欄にフォーカスが当たる小さなJavaScriptを追加します。このスクリプトはサポートライブラリとしてJQuery Tools Exposeを使っているので、これをインクルードしておきます。このライブラリをダウンロードして、 **yabe/public/javascripts/** ディレクトリに格納して、 **main.html** テンプレートを以下のインクルード文を含めるように修正してください。
+投稿者に対してもっと分かりやすいフィードバックUIを作るために、エラー時に自動的に入力欄にフォーカスが当たる小さな JavaScript を追加します。このスクリプトはサポートライブラリとして JQuery Tools Expose を使っているので、これをインクルードしておきます。このライブラリをダウンロードして、 **yabe/public/javascripts/** ディレクトリに格納して、 **main.html** テンプレートを以下のインクルード文を含めるように修正してください。
 
 bc. …
 <script src="@asset("public/javascripts/jquery-1.5.2.min.js")"></script>
@@ -325,5 +325,5 @@ bc. POST    /posts/{postId}/comments                Application.postComment
 
 以上。
 
-p(note). Next: %(next)"Setting up a Captcha":guide5%. 
+p(note). Next: %(next)"キャプチャのセットアップ":guide5%. 
 

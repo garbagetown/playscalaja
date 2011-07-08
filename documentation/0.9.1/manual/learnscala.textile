@@ -1,20 +1,20 @@
-h1. Learning Scala with Play
+h1. Play フレームワークで Scala を勉強
 
-Life’s too short to not learn Scala. The Play Scala module is the easiest way to learn it. Thanks to the interactive way Play will compile, execute and report errors on your Scala code, you can immediatly start to experiment Scala. 
+Scala を学ぶには人生は短すぎます。Play-Scala モジュールは Scala を学習するに最も簡単な方法です。Play がコンパイルから、実行、Scala コード上のエラー表現等、インタラクティブな開発スタイルを提供してくれているおかげで、Scala の勉強をすぐに始めることができます。
 
 h2. <a>Play with Scala</a>
 
-**Play with Scala** is an application part of this module that allow you to interactively code and execute Scala code from your preferred text editor.
+**Play with Scala** は、このモジュールのアプリケーションの一部で、Scala コードをインタラクティブにコーディングしたり、あなたの好きなエディタからでも実行させることができます。
 
-To run it, go to **$PLAY_HOME/modules/scala/samples-and-test/play-with-scala** directory, and type:
+実行するには、 **$PLAY_HOME/modules/scala/samples-and-test/play-with-scala** に移動し、以下のように実行してください。
 
 bc. $ play run
 
-Then connect to "http://localhost:9000":http://localhost:9000 with your preferred web browser.
+お好きなブラウザで、 "http://localhost:9000":http://localhost:9000 にアクセスしてください。
 
 !images/play-with-scala!
 
-Now open the **app/scrapbook.scala** file included in the application with any text editor:
+アプリケーションに含まれている **app/scrapbook.scala** ファイルを、エディタで開いてください。
 
 bc. package play_with_scala {
  
@@ -24,9 +24,9 @@ bc. package play_with_scala {
  
 }
 
-The @Scrapbook@ class body will be automatically executed each time you refresh the Web page. Every @print@ or @println@ statement result will be displayed right into the Web page.
+@Scrapbook@ クラスの中身は、WEBページがリロードされる度に自動的に実行されます。 @print@ 文や @println@ 文の結果は、WEB ページ内に印字されます。
 
-For example, discard the dummy default @print@ statement, and replace it with something more interesting:
+例えば、ダミーのデフォルト @print@ 文を削除し、以下のもっと面白いコードに置き換えてみてください。
 
 bc. package play_with_scala {
  
@@ -50,11 +50,11 @@ bc. package play_with_scala {
  
 }
 
-And refresh your brower:
+そして、ブラウザをリロードします。
 
 !images/play-with-scala2!
 
-You are not limited to code in the @Scrapbook@ class, you can of course define any class or function your want:
+@Scrapbook@ クラス内のコードに限定される必要はなく、どのクラスでもどの関数でも定義することができます。
 
 bc. package play_with_scala {
  
@@ -75,17 +75,17 @@ bc. package play_with_scala {
  
 }
 
-That will display:
+以下のように表示されます。
 
 !images/play-with-scala3!
 
-Of course, if we make an error, Play will display a clear error page:
+もちろん、エラーになれば、エラーページが表示されます。
 
 !images/play-with-scala-error!
 
 h2. <a>Resources</a>
 
-The Play with Scala application links to several interesting resources that can help you to discover and learn Scala.
+*Play with Scala* は以下のいくつかのリソースにリンクしているので、Scala の学習に役立ててください。
 
 # "Scala for Java Refugees":http://www.codecommit.com/blog/scala/roundup-scala-for-java-refugees
 # "Programming scala":http://programming-scala.labs.oreilly.com/

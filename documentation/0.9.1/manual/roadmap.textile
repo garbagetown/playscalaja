@@ -1,16 +1,16 @@
-h1. Roadmap to Play Scala 1.0
+h1. Play-Scala 1.0 へのロードマップ
 
-This version is still in beta but can already be used to create complete Play applications using Scala as main language. Most of the API is stabilized and future versions will just improve compatibility with the existing Play features.
+今のバージョンはまだベータ版ですが、Scalaをメイン言語として使って Play フレームワークアプリケーションをちゃんと作ることがで既にできる状態にあります。ほとんどの API は安定しており、将来のバージョンでは既存の機能との互換性を維持しつつ改良されていくだけです。
 
-h2. Missing features
+h2. 未実装機能
 
-Before completing the *1.0* version of Play Scala we need to work on the following aspects:
+Play-Scala バージョン *1.0* までに以下の機能に取組んで行きます。
 
-* Rework the MVC layer to make it easier to compose Actions.
-* Add proper *JSON support* — Probably using "Lift JSON":https://github.com/lift/lift/tree/master/framework/lift-base/lift-json/
-* Provide an API to work with the Play *async* features.
-* Integrate "Akka actors":http://www.akka.io
-* Provide a type safe way to express routes directly in Scala
-* So probably move to *Scala 2.9*.
+* Action の組み立てをより簡単にできるように、MVC レイヤーを見直し。
+* Scala用の *JSON サポート* 機能の追加。（おそらく "Lift JSON":https://github.com/lift/lift/tree/master/framework/lift-base/lift-json/ ）を使います。
+* Play フレームワークの *非同期* 機能を使うための API を提供
+* "Akka アクター":http://www.akka.io の取り込み
+* Scala でダイレクトにルートを表現するタイプセーフな方法を提供
+* あと、たぶん *Scala 2.9* に上げます。
 
-p(note). Any help on these subjects is welcome.
+p(note). これらのテーマにご協力いただける方を歓迎します。

@@ -21,8 +21,9 @@
         <h2>バージョン選択</h2>
         <div id="bc">
             <ul>
-                <li><a class="#{if version == '0.9'}selected#{/if}" href="/documentation?version=0.9">0.9</a> #{if version == '0.9'}⬅#{/if}</li>
-                <li><a class="#{if version == '0.9.1'}selected#{/if}" href="/documentation?version=0.9.1">0.9.1</a> #{if version == '0.9.1'}⬅#{/if}</li>
+            #{list items:versions, as:'item'}
+                <li><a class="#{if version == item}selected#{/if}" href="/documentation?version=${item}">${item}</a> #{if version == item}⬅#{/if}</li>
+            #{/list}
             </ul>
         </div>
         

@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.*;
+import java.util.*;
 
 import play.*;
 import play.libs.*;
@@ -13,6 +14,23 @@ import util.*;
  */
 public class Documentation extends Controller {
 
+    private static List<String> versions;
+
+    private static String latestVersion;
+
+    static {
+        versions = new ArrayList<String>();
+        String[] dirNames = new File(Play.applicationPath, "documentation/").list();
+        for (String name : dirNames) {
+            if (name.equals("modules")) {
+                continue;
+            }
+            versions.add(name);
+        }
+        Collections.reverse(versions);
+        latestVersion = Play.configuration.getProperty("version.latest");
+    }
+
     /**
      * 
      * @param version
@@ -21,17 +39,17 @@ public class Documentation extends Controller {
      */
     public static void page(String version, String id) throws Exception {
 
+        List<String> versions = Documentation.versions;
+
         String action = "documentation";
         
-        String latest = Play.configuration.getProperty("version.latest");
-
         File page = new File(
                 Play.applicationPath,
                 "documentation/" + version + "/manual/" + id + ".textile");
 
         if (!page.exists()) {
-            if (!version.equals(latest)) {
-                page(latest, id);
+            if (!version.equals(latestVersion)) {
+                page(latestVersion, id);
             }
             notFound(page.getPath());
         }
@@ -40,7 +58,7 @@ public class Documentation extends Controller {
         String html = Textile.toHTML(textile);
         String title = getTitle(textile);
 
-        render(action, version, id, html, title);
+        render(action, versions, version, id, html, title);
     }
 
     /**
